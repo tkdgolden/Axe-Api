@@ -35,6 +35,12 @@ class JudgeTestCase(TestCase):
 
         self.assertIn('judge1', judge)
 
+        with self.assertRaises(ValueError):
+            verify_judge("judge1", "tEsTpAsS")
+
+        with self.assertRaises(ValueError):
+            verify_judge("judge2", "pAsSwOrD")
+
 class CompetitorTestCase(TestCase):
     """ testing methods involving competitor table """
         

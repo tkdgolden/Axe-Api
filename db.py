@@ -39,10 +39,10 @@ def verify_judge(name, password):
         conn.rollback()
         raise
 
-    pass_hash = rows[0]["pass_hash"]
-
     if len(rows) != 1:
         raise ValueError("The judge name was not found.")
+    
+    pass_hash = rows[0]["pass_hash"]
     
     if not check_password_hash(pass_hash, password):
         raise ValueError("The password didn't match.")
