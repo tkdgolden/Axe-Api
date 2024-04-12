@@ -13,3 +13,13 @@ CREATE TABLE judges (
 
 INSERT INTO judges (judge_name, pass_hash)
     VALUES ('judge1', 'pAsSwOrD');
+
+CREATE TABLE competitors (
+    competitor_id SERIAL PRIMARY KEY,
+    competitor_first_name TEXT NOT NULL,
+    competitor_last_name TEXT NOT NULL
+);
+
+INSERT INTO competitors (competitor_first_name, competitor_last_name)
+    VALUES ('ann', 'applewood'),
+            ('bob', 'berrymore');
