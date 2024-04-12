@@ -23,3 +23,13 @@ CREATE TABLE competitors (
 INSERT INTO competitors (competitor_first_name, competitor_last_name)
     VALUES ('ann', 'applewood'),
             ('bob', 'berrymore');
+
+CREATE TABLE seasons (
+    season_id SERIAL PRIMARY KEY,
+    season TEXT NOT NULL,
+    start_date DATE NOT NULL
+);
+
+INSERT INTO seasons (season, start_date)
+    VALUES ('I', '2024-01-20'),
+            ('II', '2024-08-15');

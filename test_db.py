@@ -4,6 +4,7 @@
 
 from db import *
 from unittest import TestCase
+import datetime
 
 
 CUR = db_connect()
@@ -82,3 +83,22 @@ class CompetitorTestCase(TestCase):
 
         with self.assertRaises(ValueError):
             edit_competitor(4, "ann", "applewood")
+
+class SeasonTestCase(TestCase):
+    """ testing methods involving seasons table """
+
+    def test_no_duplicate_season(self):
+        """ tests duplicate season checker """
+
+        self.assertFalse(no_duplicate_season('I', datetime.date(2024, 2, 12)))
+        self.assertTrue(no_duplicate_season('I', datetime.date(2023, 2, 12)))
+
+    def test_add_season(self):
+        """ tests adding a new season """
+
+        add_season('III', datetime.date(2023, 2, 12))
+
+        CUR.execute(""" SELECT * FROM seasons """)
+        all_seasons = str(CUR.fetchall())
+
+        self.assertIn("III", all_seasons)

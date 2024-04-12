@@ -50,11 +50,12 @@ def verify_judge(name, password):
         # a more efficient, readable way to unpack this? vvv
         return rows[0]["judge_id"], rows[0]["judge_name"]
 
-def add_competitor(first_name, last_name):
-    """ check a competitor doesn't already exist and if not, add them """
+
+def no_duplicate_competitor(first_name, last_name):
+    """ check a competitor doesn't already exist """
 
     try:
-        CUR.execute("""SELECT * FROM competitors WHERE competitor_first_name = %(first_name)s AND competitor_last_name = %(last_name)s""", {'first_name': first_name, 'last_name': last_name})
+        CUR.execute(""" SELECT * FROM competitors WHERE competitor_first_name = %(first_name)s AND competitor_last_name = %(last_name)s """, {'first_name': first_name, 'last_name': last_name})
         
         rows = CUR.fetchall()
 
@@ -64,9 +65,18 @@ def add_competitor(first_name, last_name):
 
     if len(rows) > 0:
         raise ValueError("A user with this name already exists.")
-    
+
+
+def add_competitor(first_name, last_name):
+    """  add a new competitor """
+
     try:
-        CUR.execute("""INSERT INTO competitors (competitor_first_name, competitor_last_name) VALUES (%(first_name)s, %(last_name)s)""", {'first_name': first_name, 'last_name': last_name})
+        no_duplicate_competitor(first_name, last_name)
+    except:
+        raise
+
+    try:
+        CUR.execute(""" INSERT INTO competitors (competitor_first_name, competitor_last_name) VALUES (%(first_name)s, %(last_name)s) """, {'first_name': first_name, 'last_name': last_name})
         conn.commit()
     
     except:
@@ -78,20 +88,52 @@ def edit_competitor(competitor_id, first_name, last_name):
     """ check a competitor exists and edit them """
 
     try:
-        CUR.execute("""SELECT * FROM competitors WHERE competitor_first_name = %(first_name)s AND competitor_last_name = %(last_name)s""", {'first_name': first_name, 'last_name': last_name})
+        no_duplicate_competitor(first_name, last_name)
+    except:
+        raise
+
+    try:
+        CUR.execute(""" UPDATE competitors SET competitor_first_name = %(first_name)s, competitor_last_name = %(last_name)s WHERE competitor_id = %(competitor_id)s """, {'first_name': first_name, 'last_name': last_name, 'competitor_id': competitor_id})
         
-        rows = CUR.fetchall()
+        conn.commit()
 
     except:
         conn.rollback()
         raise
 
-    if len(rows) > 0:
-        raise ValueError("A user with this name already exists.")
+
+def no_duplicate_season(season, start_date):
+    """ checks if a season already exists for that year """
+
+    year = start_date.year
+    next_year = year + 1
 
     try:
-        CUR.execute("""UPDATE competitors SET competitor_first_name = %(first_name)s, competitor_last_name = %(last_name)s WHERE competitor_id = %(competitor_id)s""", {'first_name': first_name, 'last_name': last_name, 'competitor_id': competitor_id})
-        
+        CUR.execute(""" SELECT * FROM seasons WHERE season = %(season)s AND start_date BETWEEN '%(year)s-01-01 00:00:00'::timestamp AND '%(next_year)s-01-01 00:00:00'::timestamp """, 
+                    {'season': season,
+                     'year': year,
+                     'next_year': next_year})
+        rows = CUR.fetchall()
+    
+    except:
+        conn.rollback()
+        raise
+
+    if len(rows) < 1:
+        return True
+    else:
+        return False
+
+
+def add_season(season, start_date):
+    """ adds a new season """
+
+    if not no_duplicate_season(season, start_date):
+        raise ValueError("A similar season already exists for the given year.")
+
+    try:
+        CUR.execute(""" INSERT INTO seasons (season, start_date) VALUES (%(season)s, %(start_date)s) """, 
+                    {'season': season, 'start_date': start_date})
         conn.commit()
 
     except:
