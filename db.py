@@ -1,12 +1,13 @@
 import psycopg2
-from werkzeug.security import generate_password_hash
+import psycopg2.extras
+from werkzeug.security import generate_password_hash, check_password_hash
 
 def db_connect():
     global conn
     conn = psycopg2.connect("dbname=test_axe")
 
     global CUR
-    CUR = conn.cursor()
+    CUR = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
     return CUR
 
@@ -24,7 +25,30 @@ def add_judge(name, password):
     except:
         conn.rollback()
         raise ValueError("A judge with this name already exists.")
+    
 
+def verify_judge(name, password):
+    """ verify's judge name and hashed password match """
+
+    try:
+        CUR.execute(""" SELECT * FROM judges WHERE judge_name = %(name)s """, 
+                    {'name': name})
+        rows = CUR.fetchall()
+
+    except:
+        conn.rollback()
+        raise
+
+    pass_hash = rows[0]["pass_hash"]
+
+    if len(rows) != 1:
+        raise ValueError("The judge name was not found.")
+    
+    if not check_password_hash(pass_hash, password):
+        raise ValueError("The password didn't match.")
+    else:
+        # a more efficient, readable way to unpack this? vvv
+        return rows[0]["judge_id"], rows[0]["judge_name"]
 
 def add_competitor(first_name, last_name):
     """ check a competitor doesn't already exist and if not, add them """

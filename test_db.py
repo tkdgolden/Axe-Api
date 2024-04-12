@@ -28,6 +28,13 @@ class JudgeTestCase(TestCase):
         with self.assertRaises(ValueError):
             add_judge("judge1", "tEsTpAsS")
 
+    def test_verify_judge(self):
+        """ tests judge verification method """
+
+        judge = verify_judge("judge1", "pAsSwOrD")
+
+        self.assertIn('judge1', judge)
+
 class CompetitorTestCase(TestCase):
     """ testing methods involving competitor table """
         

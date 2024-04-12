@@ -12,7 +12,7 @@ CREATE TABLE judges (
 );
 
 INSERT INTO judges (judge_name, pass_hash)
-    VALUES ('judge1', 'pAsSwOrD');
+    VALUES ('judge1', 'scrypt:32768:8:1$M9YNLe14KZgLCnsA$76a151eeb6e6adc8421e4e0f31440be8ac0414ee26e9804f4124cbf3060431b3af4fc4cc03af1fc4b22f48210ec2bed89b5577106ab8137f68fe74717ba660c1');
 
 CREATE TABLE competitors (
     competitor_id SERIAL PRIMARY KEY,
