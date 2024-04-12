@@ -53,3 +53,19 @@ class CompetitorTestCase(TestCase):
         all_competitors = str(CUR.fetchall())
         
         self.assertIn("applesmith", all_competitors)
+
+    def test_edit_competitor(self):
+        """ tests an existing competitor gets changed """
+
+        edit_competitor(2, "fname test edit", "lname test edit")
+
+        CUR.execute(""" SELECT * FROM competitors """)
+        all_competitors = str(CUR.fetchall())
+        
+        self.assertIn("edit", all_competitors)
+
+    def test_edit_no_duplicate_competitor(self):
+        """ failure to edit competitor because already exists """
+
+        with self.assertRaises(ValueError):
+            edit_competitor(4, "ann", "applewood")
