@@ -111,3 +111,24 @@ CREATE TABLE matches (
 INSERT INTO matches (player_1_id, player_2_id, tournament_id)
     VALUES (1, 2, 1),
             (1, 3, 1);
+
+CREATE TABLE scores (
+    score_id SERIAL PRIMARY KEY,
+    competitor_id INTEGER NOT NULL REFERENCES competitors,
+    match_id INTEGER NOT NULL REFERENCES matches,
+    quick_points INTEGER,
+    sequence TEXT,
+    throw1 INTEGER NOT NULL,
+    throw2 INTEGER NOT NULL,
+    throw3 INTEGER NOT NULL,
+    throw4 INTEGER NOT NULL,
+    throw5 INTEGER NOT NULL,
+    throw6 INTEGER NOT NULL,
+    throw7 INTEGER NOT NULL,
+    throw8 INTEGER NOT NULL,
+    total INTEGER NOT NULL,
+    win BOOLEAN NOT NULL
+);
+
+INSERT INTO scores (competitor_id, match_id, quick_points, sequence, throw1, throw2, throw3, throw4, throw5, throw6, throw7, throw8, total, win)
+    VALUES (1, 1, 2, 'ORANGE D (Bottom Right),BLUE C (Bottom Left),RED A (Top Left),GREEN B (Top Right),RED A (Top Left),GREEN B (Top Right),ORANGE D (Bottom Right),BLUE C (Bottom Left)', 2, 4, 2, 4, 2, 4, 2, 4, 25, TRUE);

@@ -266,3 +266,16 @@ class MatchTestCase(TestCase):
         all_matches = CUR.fetchall()
 
         self.assertIn([1, 1, 2, 1, 1, None, 'hatchet', 1, datetime.datetime(2024, 1, 8, 4, 5, 6), 12, 35], all_matches)
+
+class ScoreTestCase(TestCase):
+    """ testing methods involving scores table """
+
+    def test_add_score(self):
+        """ tests adding a new score """
+
+        add_player_score(2, 1, 2, 'ORANGE D (Bottom Right),BLUE C (Bottom Left),RED A (Top Left),GREEN B (Top Right),RED A (Top Left),GREEN B (Top Right),ORANGE D (Bottom Right),BLUE C (Bottom Left)', 0, 0, 2, 4, 0, 0, 2, 4, 13, False)
+
+        CUR.execute(""" SELECT * FROM scores WHERE competitor_id = 2 """)
+        all_scores = CUR.fetchall()[0]
+
+        self.assertEqual(13, all_scores["total"])
