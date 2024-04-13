@@ -33,3 +33,26 @@ CREATE TABLE seasons (
 INSERT INTO seasons (season, start_date)
     VALUES ('I', '2024-01-20'),
             ('II', '2024-08-15');
+
+CREATE TABLE quarters (
+    quarter_id SERIAL PRIMARY KEY,
+    season_id INTEGER NOT NULL REFERENCES seasons,
+    month INTEGER NOT NULL,
+    start_date DATE NOT NULL
+);
+
+INSERT INTO quarters (month, season_id, start_date)
+    VALUES (1, 1, '2024-01-20'),
+            (2, 1, '2024-08-15');
+
+CREATE TABLE laps (
+    lap_id SERIAL PRIMARY KEY,
+    quarter_id INTEGER NOT NULL REFERENCES quarters,
+    counter INTEGER NOT NULL,
+    discipline TEXT NOT NULL,
+    start_date DATE NOT NULL
+);
+
+INSERT INTO laps (quarter_id, counter, discipline, start_date)
+    VALUES (1, 1, 'hatchet', '2024-01-20'),
+            (2, 1, 'knives', '2024-08-15');

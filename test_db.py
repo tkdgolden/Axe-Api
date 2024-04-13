@@ -51,9 +51,9 @@ class CompetitorTestCase(TestCase):
         add_competitor("fname test", "lname test")
 
         CUR.execute(""" SELECT * FROM competitors """)
-        all_competitors = str(CUR.fetchall())
+        all_competitors = CUR.fetchall()
         
-        self.assertIn("fname", all_competitors)
+        self.assertIn([3, 'fname test', 'lname test'], all_competitors)
 
     def test_no_duplicate_competitor(self):
         """ failure to add competitor because already exists """
@@ -64,9 +64,9 @@ class CompetitorTestCase(TestCase):
         add_competitor("ann", "applesmith")
 
         CUR.execute(""" SELECT * FROM competitors """)
-        all_competitors = str(CUR.fetchall())
+        all_competitors = CUR.fetchall()
         
-        self.assertIn("applesmith", all_competitors)
+        self.assertIn([4, 'ann', 'applesmith'], all_competitors)
 
     def test_edit_competitor(self):
         """ tests an existing competitor gets changed """
@@ -74,9 +74,9 @@ class CompetitorTestCase(TestCase):
         edit_competitor(2, "fname test edit", "lname test edit")
 
         CUR.execute(""" SELECT * FROM competitors """)
-        all_competitors = str(CUR.fetchall())
+        all_competitors = CUR.fetchall()
         
-        self.assertIn("edit", all_competitors)
+        self.assertIn([2, 'fname test edit', 'lname test edit'], all_competitors)
 
     def test_edit_no_duplicate_competitor(self):
         """ failure to edit competitor because already exists """
@@ -99,6 +99,50 @@ class SeasonTestCase(TestCase):
         add_season('III', datetime.date(2023, 2, 12))
 
         CUR.execute(""" SELECT * FROM seasons """)
-        all_seasons = str(CUR.fetchall())
+        all_seasons = CUR.fetchall()
 
-        self.assertIn("III", all_seasons)
+        self.assertIn([3, 'III', datetime.date(2023, 2, 12)], all_seasons)
+
+class QuarterTestCase(TestCase):
+    """ testing methods involving quarters table """
+
+    def test_no_duplicate_quarter(self):
+        """ tests duplicate quarter checker """
+
+        self.assertFalse(no_duplicate_quarter(1, 1))
+        self.assertTrue(no_duplicate_quarter(2, 2))
+
+    def test_add_quarter(self):
+        """ tests adding a new quarter """
+
+        with self.assertRaises(Exception):
+            add_quarter(1, 3, '2024-01-20')
+
+        add_quarter(6, 1, '2024-12-12')
+
+        CUR.execute(""" SELECT * FROM quarters """)
+        all_quarters = CUR.fetchall()
+
+        self.assertIn([4, 1, 6, datetime.date(2024, 12, 12)], all_quarters)
+
+class LapTestCase(TestCase):
+    """ testing methods involving laps table """
+
+    def test_no_duplicate_lap(self):
+        """ tests duplicate lap checker """
+
+        self.assertFalse(no_duplicate_lap(1, 1, 'hatchet'))
+        self.assertTrue(no_duplicate_lap(1, 1, 'knives'))
+
+    def test_add_lap(self):
+        """ tests adding a new lap """
+
+        with self.assertRaises(Exception):
+            add_lap(10, 1, 'hatchet', '2024-08-15')
+
+        add_lap(2, 2, 'hatchet', '2024-08-15')
+
+        CUR.execute(""" SELECT * FROM laps """)
+        all_laps = CUR.fetchall()
+
+        self.assertIn([4, 2, 2, 'hatchet', datetime.date(2024, 8, 15)], all_laps)
