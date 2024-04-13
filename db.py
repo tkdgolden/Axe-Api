@@ -263,3 +263,56 @@ def add_enrollment(competitor_id, tournament_id = None, season_id = None):
     except:
         conn.rollback()
         raise
+
+
+def no_duplicate_tournament(tournament_name, discipline, tournament_date):
+    """ checks if a tournament already exists """
+
+    try:
+        CUR.execute(""" SELECT * FROM tournaments WHERE tournament_name ILIKE %(tournament_name)s AND discipline ILIKE %(discipline)s AND tournament_date = %(tournament_date)s """, 
+                    {'tournament_name': tournament_name,
+                     'discipline': discipline,
+                     'tournament_date': tournament_date})
+        all_tournaments = CUR.fetchall()
+    except:
+        conn.rollback()
+        raise
+    
+    if len(all_tournaments) > 0:
+        return False
+    else:
+        return True
+
+
+def add_tournament(tournament_name, discipline, tournament_date):
+    """ adds a new tournament """
+
+    if not no_duplicate_tournament(tournament_name, discipline, tournament_date):
+        raise ValueError("A similar tournament already exists.")
+
+    try:
+        CUR.execute(""" INSERT INTO tournaments (tournament_name, discipline, tournament_date) VALUES (%(tournament_name)s, %(discipline)s, %(tournament_date)s) """, 
+                    {'tournament_name': tournament_name,
+                     'discipline': discipline,
+                     'tournament_date': tournament_date})
+        conn.commit()
+
+    except:
+        conn.rollback()
+        raise
+
+
+def add_round(tournament_id, matches_array, bye_array, which_round):
+    """ adds a new round for a tournament """
+
+    try:
+        CUR.execute(""" INSERT INTO rounds (tournament_id, matches, bye_competitors, which_round) VALUES (%(tournament_id)s, %(matches_array)s, %(bye_array)s, %(which_round)s) """, 
+                    {'tournament_id': tournament_id,
+                     'matches_array': matches_array,
+                     'bye_array': bye_array,
+                     'which_round': which_round})
+        conn.commit()
+
+    except:
+        conn.rollback()
+        raise

@@ -67,6 +67,10 @@ CREATE TABLE tournaments (
     double_elemination BOOLEAN DEFAULT FALSE
 );
 
+INSERT INTO tournaments (tournament_name, discipline, tournament_date)
+    VALUES ('Hatchet Fight', 'Hatchet', '2024-01-20'),
+            ('Knife Fight', 'Knives', '2024-06-26');
+
 CREATE TABLE rounds (
     round_id SERIAL PRIMARY KEY,
     bye_competitors INTEGER[],
@@ -74,6 +78,10 @@ CREATE TABLE rounds (
     tournament_id INTEGER REFERENCES tournaments,
     which_round CHAR(1)
 );
+
+INSERT INTO rounds (bye_competitors, matches, tournament_id, which_round)
+    VALUES ('{0, 0, 0, 0}', '{100, 101, 102, 103}', 1, 'C'),
+            ('{0}', '{104}', 1, 'A');
 
 CREATE TABLE enrollment (
     tournament_id INTEGER REFERENCES tournaments,

@@ -168,3 +168,36 @@ class EnrollmentTestCase(TestCase):
         all_enrollment = CUR.fetchall()
 
         self.assertIn([None, 1, 2], all_enrollment)
+
+class TournamentTestCase(TestCase):
+    """ testing methods involving tournaments table """
+
+    def test_no_duplicate_tournament(self):
+        """ tests duplicate tournament checker """
+
+        self.assertFalse(no_duplicate_tournament('Hatchet Fight', 'hatchet', '2024-01-20'))
+        self.assertTrue(no_duplicate_tournament('Knife Fight', 'Knives', '2024-01-20'))
+
+    def test_add_tournament(self):
+        """ tests adding a new tournament """
+
+
+        add_tournament('Fight Test', 'Knives', '2024-12-22')
+
+        CUR.execute(""" SELECT * FROM tournaments """)
+        all_tournaments = CUR.fetchall()
+
+        self.assertIn([3, 'Fight Test', 'Knives', datetime.date(2024, 12, 22), True, None, False], all_tournaments)
+
+class RoundTestCase(TestCase):
+    """ testing methods involving rounds table """
+
+    def test_add_round(self):
+        """ tests adding a new round """
+
+        add_round(1, '{0, 0}', '{105, 106}', 'B')
+
+        CUR.execute(""" SELECT * FROM rounds """)
+        all_rounds = CUR.fetchall()
+
+        self.assertIn([3, [105, 106], [0, 0], 1, 'B'], all_rounds)
