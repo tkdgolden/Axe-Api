@@ -156,8 +156,8 @@ class EnrollmentTestCase(TestCase):
         self.assertFalse(no_duplicate_enrollment(season_id=1, competitor_id=1))
         self.assertTrue(no_duplicate_enrollment(season_id=2, competitor_id=1))
 
-    def test_add_enrollment(self):
-        """ tests adding a new enrollment """
+    def test_add_season_enrollment(self):
+        """ tests adding a new enrollment to a season """
 
         with self.assertRaises(Exception):
             add_enrollment(season_id=1, competitor_id=6)
@@ -168,6 +168,19 @@ class EnrollmentTestCase(TestCase):
         all_enrollment = CUR.fetchall()
 
         self.assertIn([None, 1, 2], all_enrollment)
+
+    def test_add_tournament_enrollment(self):
+        """ tests adding a new enrollment to a tournament """
+
+        with self.assertRaises(Exception):
+            add_enrollment(tournament_id=1, competitor_id=6)
+
+        add_enrollment(tournament_id=1, competitor_id=2)
+
+        CUR.execute(""" SELECT * FROM enrollment """)
+        all_enrollment = CUR.fetchall()
+
+        self.assertIn([1, None, 2], all_enrollment)
 
 class TournamentTestCase(TestCase):
     """ testing methods involving tournaments table """
@@ -181,13 +194,32 @@ class TournamentTestCase(TestCase):
     def test_add_tournament(self):
         """ tests adding a new tournament """
 
-
         add_tournament('Fight Test', 'Knives', '2024-12-22')
 
         CUR.execute(""" SELECT * FROM tournaments """)
         all_tournaments = CUR.fetchall()
 
         self.assertIn([3, 'Fight Test', 'Knives', datetime.date(2024, 12, 22), True, None, False], all_tournaments)
+
+    def test_update_tournament_enrollment(self):
+        """ tests update tournament enrollment """
+
+        update_tournament_enrollment(1)
+
+        CUR.execute(""" SELECT * FROM tournaments WHERE tournament_id = 1 """)
+        tournament = CUR.fetchone()
+
+        self.assertFalse(tournament["enrollment_open"])
+
+    def test_update_tournament_current_round(self):
+        """ tests update tournament current round """
+
+        update_tournament_current_round(2, 1)
+
+        CUR.execute(""" SELECT * FROM tournaments WHERE tournament_id = 2 """)
+        tournament = CUR.fetchone()
+
+        self.assertEqual(1, tournament["current_round"])
 
 class RoundTestCase(TestCase):
     """ testing methods involving rounds table """

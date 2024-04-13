@@ -254,15 +254,29 @@ def add_enrollment(competitor_id, tournament_id = None, season_id = None):
     if not no_duplicate_enrollment(competitor_id, tournament_id, season_id):
         raise ValueError("This competitor is already enrolled.")
 
-    try:
-        CUR.execute(""" INSERT INTO enrollment (season_id, competitor_id) VALUES (%(season_id)s, %(competitor_id)s) """, 
-                    {'season_id': season_id,
-                     'competitor_id': competitor_id})
-        conn.commit()
+    if season_id:
+        try:
+            CUR.execute(""" INSERT INTO enrollment (season_id, competitor_id) VALUES (%(season_id)s, %(competitor_id)s) """, 
+                        {'season_id': season_id,
+                        'competitor_id': competitor_id})
+            conn.commit()
 
-    except:
-        conn.rollback()
-        raise
+        except:
+            conn.rollback()
+            raise
+
+    elif tournament_id:
+        try:
+            CUR.execute(""" INSERT INTO enrollment (tournament_id, competitor_id) VALUES (%(tournament_id)s, %(competitor_id)s) """, 
+                        {'tournament_id': tournament_id,
+                        'competitor_id': competitor_id})
+            conn.commit()
+
+        except:
+            conn.rollback()
+            raise
+    else:
+        raise ValueError("Must specify a season or tournament.")
 
 
 def no_duplicate_tournament(tournament_name, discipline, tournament_date):
@@ -297,6 +311,31 @@ def add_tournament(tournament_name, discipline, tournament_date):
                      'tournament_date': tournament_date})
         conn.commit()
 
+    except:
+        conn.rollback()
+        raise
+
+
+def update_tournament_enrollment(tournament_id):
+    """ sets tournament's enrollment to false """
+
+    try:
+        CUR.execute(""" UPDATE tournaments SET enrollment_open = FALSE WHERE tournament_id = %(tournament_id)s """,
+                    {'tournament_id': tournament_id})
+    
+    except:
+        conn.rollback()
+        raise
+
+
+def update_tournament_current_round(tournament_id, round_id):
+    """ sets tournament's current round """
+
+    try:
+        CUR.execute(""" UPDATE tournaments SET current_round = %(round_id)s WHERE tournament_id = %(tournament_id)s """,
+                    {'round_id': round_id,
+                     'tournament_id': tournament_id})
+        
     except:
         conn.rollback()
         raise
