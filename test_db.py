@@ -146,3 +146,25 @@ class LapTestCase(TestCase):
         all_laps = CUR.fetchall()
 
         self.assertIn([4, 2, 2, 'hatchet', datetime.date(2024, 8, 15)], all_laps)
+
+class EnrollmentTestCase(TestCase):
+    """ testing methods involving enrollment table """
+
+    def test_no_duplicate_enrollment(self):
+        """ tests duplicate enrollment checker """
+
+        self.assertFalse(no_duplicate_enrollment(season_id=1, competitor_id=1))
+        self.assertTrue(no_duplicate_enrollment(season_id=2, competitor_id=1))
+
+    def test_add_enrollment(self):
+        """ tests adding a new enrollment """
+
+        with self.assertRaises(Exception):
+            add_enrollment(season_id=1, competitor_id=6)
+
+        add_enrollment(season_id=1, competitor_id=2)
+
+        CUR.execute(""" SELECT * FROM enrollment """)
+        all_enrollment = CUR.fetchall()
+
+        self.assertIn([None, 1, 2], all_enrollment)

@@ -56,3 +56,31 @@ CREATE TABLE laps (
 INSERT INTO laps (quarter_id, counter, discipline, start_date)
     VALUES (1, 1, 'hatchet', '2024-01-20'),
             (2, 1, 'knives', '2024-08-15');
+
+CREATE TABLE tournaments (
+    tournament_id SERIAL PRIMARY KEY,
+    tournament_name TEXT NOT NULL,
+    discipline TEXT NOT NULL,
+    tournament_date DATE NOT NULL,
+    enrollment_open BOOLEAN DEFAULT TRUE,
+    current_round INTEGER,
+    double_elemination BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE rounds (
+    round_id SERIAL PRIMARY KEY,
+    bye_competitors INTEGER[],
+    matches INTEGER[],
+    tournament_id INTEGER REFERENCES tournaments,
+    which_round CHAR(1)
+);
+
+CREATE TABLE enrollment (
+    tournament_id INTEGER REFERENCES tournaments,
+    season_id INTEGER REFERENCES seasons,
+    competitor_id INTEGER REFERENCES competitors
+);
+
+INSERT INTO enrollment (season_id, competitor_id)
+    VALUES (1, 1),
+            (2, 2);
