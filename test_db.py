@@ -53,7 +53,7 @@ class CompetitorTestCase(TestCase):
         CUR.execute(""" SELECT * FROM competitors """)
         all_competitors = CUR.fetchall()
         
-        self.assertIn([3, 'fname test', 'lname test'], all_competitors)
+        self.assertIn([4, 'fname test', 'lname test'], all_competitors)
 
     def test_no_duplicate_competitor(self):
         """ failure to add competitor because already exists """
@@ -66,23 +66,23 @@ class CompetitorTestCase(TestCase):
         CUR.execute(""" SELECT * FROM competitors """)
         all_competitors = CUR.fetchall()
         
-        self.assertIn([4, 'ann', 'applesmith'], all_competitors)
+        self.assertIn([5, 'ann', 'applesmith'], all_competitors)
 
     def test_edit_competitor(self):
         """ tests an existing competitor gets changed """
 
-        edit_competitor(2, "fname test edit", "lname test edit")
+        edit_competitor(3, "fname test edit", "lname test edit")
 
         CUR.execute(""" SELECT * FROM competitors """)
         all_competitors = CUR.fetchall()
         
-        self.assertIn([2, 'fname test edit', 'lname test edit'], all_competitors)
+        self.assertIn([3, 'fname test edit', 'lname test edit'], all_competitors)
 
     def test_edit_no_duplicate_competitor(self):
         """ failure to edit competitor because already exists """
 
         with self.assertRaises(ValueError):
-            edit_competitor(4, "ann", "applewood")
+            edit_competitor(5, "ann", "applewood")
 
 class SeasonTestCase(TestCase):
     """ testing methods involving seasons table """
@@ -233,3 +233,36 @@ class RoundTestCase(TestCase):
         all_rounds = CUR.fetchall()
 
         self.assertIn([3, [105, 106], [0, 0], 1, 'B'], all_rounds)
+
+class MatchTestCase(TestCase):
+    """ testing methods involving matches table """
+
+    def test_add_unscored_tournament_match(self):
+        """ tests adding a new empty match in a tournament """
+
+        add_unscored_tournament_match(2, 3, 1)
+
+        CUR.execute(""" SELECT * FROM matches WHERE player_1_id = 2 AND player_2_id = 3 """)
+        all_matches = CUR.fetchall()
+
+        self.assertIn([4, 2, 3, None, 1, None, None, None, None, None, None], all_matches)
+
+    def test_add_unscored_season_match(self):
+        """ tests adding a new empty match in a season """
+
+        add_unscored_season_match(2, 3, 1)
+
+        CUR.execute(""" SELECT * FROM matches WHERE match_id = 3 """)
+        all_matches = CUR.fetchall()
+
+        self.assertIn([3, 2, 3, None, None, 1, None, None, None, None, None], all_matches)
+
+    def test_update_completed_match(self):
+        """ tests updating a match with complete data """
+
+        update_completed_match(1, 1, "hatchet", 1, '2024-01-08 04:05:06', 12, 35)
+
+        CUR.execute(""" SELECT * FROM matches WHERE match_id = 1 """)
+        all_matches = CUR.fetchall()
+
+        self.assertIn([1, 1, 2, 1, 1, None, 'hatchet', 1, datetime.datetime(2024, 1, 8, 4, 5, 6), 12, 35], all_matches)

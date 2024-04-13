@@ -22,7 +22,8 @@ CREATE TABLE competitors (
 
 INSERT INTO competitors (competitor_first_name, competitor_last_name)
     VALUES ('ann', 'applewood'),
-            ('bob', 'berrymore');
+            ('bob', 'berrymore'),
+            ('carrie', 'castleman');
 
 CREATE TABLE seasons (
     season_id SERIAL PRIMARY KEY,
@@ -75,7 +76,7 @@ CREATE TABLE rounds (
     round_id SERIAL PRIMARY KEY,
     bye_competitors INTEGER[],
     matches INTEGER[],
-    tournament_id INTEGER REFERENCES tournaments,
+    tournament_id INTEGER NOT NULL REFERENCES tournaments,
     which_round CHAR(1)
 );
 
@@ -86,9 +87,27 @@ INSERT INTO rounds (bye_competitors, matches, tournament_id, which_round)
 CREATE TABLE enrollment (
     tournament_id INTEGER REFERENCES tournaments,
     season_id INTEGER REFERENCES seasons,
-    competitor_id INTEGER REFERENCES competitors
+    competitor_id INTEGER NOT NULL REFERENCES competitors
 );
 
 INSERT INTO enrollment (season_id, competitor_id)
     VALUES (1, 1),
             (2, 2);
+
+CREATE TABLE matches (
+    match_id SERIAL PRIMARY KEY,
+    player_1_id INTEGER NOT NULL REFERENCES competitors,
+    player_2_id INTEGER NOT NULL REFERENCES competitors,
+    winner_id INTEGER REFERENCES competitors,
+    tournament_id INTEGER REFERENCES tournaments,
+    lap_id INTEGER REFERENCES laps,
+    discipline TEXT,
+    judge_id INTEGER REFERENCES judges,
+    dt TIMESTAMP,
+    player_1_total INTEGER,
+    player_2_total INTEGER
+);
+
+INSERT INTO matches (player_1_id, player_2_id, tournament_id)
+    VALUES (1, 2, 1),
+            (1, 3, 1);
