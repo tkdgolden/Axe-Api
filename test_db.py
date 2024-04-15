@@ -3,11 +3,12 @@
 # python3 -m unittest
 
 from db import *
+from judge import *
 from unittest import TestCase
 import datetime
 
 
-CUR = db_connect()
+CUR, conn = db_connect()
 
 class JudgeTestCase(TestCase):
     """ testing methods involving judge table """
