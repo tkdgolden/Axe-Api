@@ -4,6 +4,15 @@
 
 from db import *
 from judge import *
+from competitor import *
+from season import *
+from quarter import *
+from lap import *
+from enrollment import *
+from tournament import *
+from round import *
+from match import *
+from score import *
 from unittest import TestCase
 import datetime
 
