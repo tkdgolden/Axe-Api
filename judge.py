@@ -36,9 +36,8 @@ def verify_judge(name, password):
         raise ValueError("The judge name was not found.")
     
     pass_hash = all_judges[0]["pass_hash"]
-    
+
     if not check_password_hash(pass_hash, password):
         raise ValueError("The password didn't match.")
     else:
-        # a more efficient, readable way to unpack this? vvv
-        return all_judges[0]["judge_id"], all_judges[0]["judge_name"]
+        return all_judges[0]["judge_id"]

@@ -9,5 +9,3 @@ def db_connect():
     CUR = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
     return CUR, conn
-
-

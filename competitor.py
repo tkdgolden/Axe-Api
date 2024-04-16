@@ -15,7 +15,7 @@ def no_duplicate_competitor(first_name, last_name):
         raise
 
     if len(all_competitors) > 0:
-        raise ValueError("A user with this name already exists.")
+        raise ValueError("A competitor with this name already exists.")
 
 
 def add_competitor(first_name, last_name):

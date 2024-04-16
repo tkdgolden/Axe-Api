@@ -1,9 +1,96 @@
-from flask import Flask
+from flask import Flask, jsonify, request, session, json
 from db import *
+from auth import login_required
+from judge import *
+from competitor import *
+import os
 
 
 app = Flask(__name__)
-
+app.secret_key = os.urandom(12).hex()
 
 db_connect()
 
+
+@app.route("/judges/new", methods=["POST"])
+@login_required
+def new_judge():
+    """ create a new judge """
+
+    try:
+        name = request.json["name"]
+        password = request.json["password"]
+    except:
+        error = "A new judge requires a name and password."
+        print(error)
+        return jsonify(error), 400
+
+    try:
+        add_judge(name, password)
+        return jsonify(success = True), 201
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+
+
+@app.route("/judges/verify", methods=["POST"])
+def check_judge():
+    """ verify a judge """
+
+    try:
+        name = request.json["name"]
+        password = request.json["password"]
+    except:
+        error = "A judge requires a name and password."
+        print(error)
+        return jsonify(error), 400
+
+    try:
+        judge_id = verify_judge(name, password)
+        session["user_id"] = judge_id
+        return jsonify(success = True)
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
+
+@app.route('/competitors', methods=["GET", "POST", "PUT"])
+@login_required
+def competitor():
+    """ create or edit competitor """
+
+    try:
+        first_name = request.json["first_name"]
+        last_name = request.json["last_name"]
+    except:
+        error = "A new competitor requires a first and last name."
+        print(error)
+        return jsonify(error), 400
+
+    if request.method == 'POST':
+        """ create a new competitor """
+        
+        try:
+            add_competitor(first_name, last_name)
+            return jsonify(success=True), 201
+        except Exception as error:
+            print(error)
+            return jsonify(error = str(error)), 400
+        
+    if request.method == 'PUT':
+        """ replace an existing competitor """
+        
+        try:
+            competitor_id = request.json["competitor_id"]
+        except:
+            error = "A competitor requires an id to edit."
+            print(error)
+            return jsonify(error), 400
+
+        try:
+            edit_competitor(competitor_id, first_name, last_name)
+            return jsonify(success=True)
+        except Exception as error:
+            print(error)
+            return jsonify(error = str(error)), 400

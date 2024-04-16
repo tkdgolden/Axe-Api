@@ -42,9 +42,9 @@ class JudgeTestCase(TestCase):
     def test_verify_judge(self):
         """ tests judge verification method """
 
-        judge = verify_judge("judge1", "pAsSwOrD")
+        id = verify_judge("judge1", "pAsSwOrD")
 
-        self.assertIn('judge1', judge)
+        self.assertEqual(1, id)
 
         with self.assertRaises(ValueError):
             verify_judge("judge1", "tEsTpAsS")
@@ -63,7 +63,7 @@ class CompetitorTestCase(TestCase):
         CUR.execute(""" SELECT * FROM competitors """)
         all_competitors = CUR.fetchall()
         
-        self.assertIn([4, 'fname test', 'lname test'], all_competitors)
+        self.assertIn([5, 'fname test', 'lname test'], all_competitors)
 
     def test_no_duplicate_competitor(self):
         """ failure to add competitor because already exists """
@@ -76,23 +76,23 @@ class CompetitorTestCase(TestCase):
         CUR.execute(""" SELECT * FROM competitors """)
         all_competitors = CUR.fetchall()
         
-        self.assertIn([5, 'ann', 'applesmith'], all_competitors)
+        self.assertIn([6, 'ann', 'applesmith'], all_competitors)
 
     def test_edit_competitor(self):
         """ tests an existing competitor gets changed """
 
-        edit_competitor(3, "fname test edit", "lname test edit")
+        edit_competitor(4, "fname test edit", "lname test edit")
 
         CUR.execute(""" SELECT * FROM competitors """)
         all_competitors = CUR.fetchall()
         
-        self.assertIn([3, 'fname test edit', 'lname test edit'], all_competitors)
+        self.assertIn([4, 'fname test edit', 'lname test edit'], all_competitors)
 
     def test_edit_no_duplicate_competitor(self):
         """ failure to edit competitor because already exists """
 
         with self.assertRaises(ValueError):
-            edit_competitor(5, "ann", "applewood")
+            edit_competitor(6, "ann", "applewood")
 
 class SeasonTestCase(TestCase):
     """ testing methods involving seasons table """
@@ -170,7 +170,7 @@ class EnrollmentTestCase(TestCase):
         """ tests adding a new enrollment to a season """
 
         with self.assertRaises(Exception):
-            add_enrollment(season_id=1, competitor_id=6)
+            add_enrollment(season_id=1, competitor_id=7)
 
         add_enrollment(season_id=1, competitor_id=2)
 
@@ -183,7 +183,7 @@ class EnrollmentTestCase(TestCase):
         """ tests adding a new enrollment to a tournament """
 
         with self.assertRaises(Exception):
-            add_enrollment(tournament_id=1, competitor_id=6)
+            add_enrollment(tournament_id=1, competitor_id=7)
 
         add_enrollment(tournament_id=1, competitor_id=2)
 
