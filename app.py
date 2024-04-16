@@ -7,6 +7,7 @@ from competitor import *
 from season import *
 from quarter import *
 from lap import *
+from enrollment import *
 import os
 
 
@@ -160,6 +161,36 @@ def lap():
     
     try:
         add_lap(quarter_id, counter, discipline, start_date)
+        return jsonify(success=True), 201
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
+@app.route('/enrollment', methods=["POST"])
+@login_required
+def enrollment():
+    """ enrolls a competitor to a season or tournament """
+
+    try:
+        competitor_id = request.json["competitor_id"]
+        if ("season_id" in request.json and "tournament_id" in request.json):
+            raise
+        elif ("season_id" in request.json):
+            season_id = request.json["season_id"]
+            tournament_id = None
+        elif ("tournament_id" in request.json):
+            tournament_id = request.json["tournament_id"]
+            season_id = None
+        else:
+            raise
+    except:
+        error = "Enrollment requires a competitor id and either a season id or a tournament id."
+        print(error)
+        return jsonify(error), 400
+    
+    try:
+        add_enrollment(competitor_id, season_id, tournament_id)
         return jsonify(success=True), 201
     except Exception as error:
         print(error)
