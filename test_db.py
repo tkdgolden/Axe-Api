@@ -133,7 +133,7 @@ class QuarterTestCase(TestCase):
         CUR.execute(""" SELECT * FROM quarters """)
         all_quarters = CUR.fetchall()
 
-        self.assertIn([4, 1, 6, datetime.date(2024, 12, 12)], all_quarters)
+        self.assertIn([5, 1, 6, datetime.date(2024, 12, 12)], all_quarters)
 
 class LapTestCase(TestCase):
     """ testing methods involving laps table """

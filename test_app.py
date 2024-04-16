@@ -151,7 +151,6 @@ class SeasonRouteTestCase(TestCase):
             resp = client.post('/seasons',
                                json={"season": "I", "start_date": "2022-02-22"})
             resp.get_data(as_text=True)
-            print(resp.data)
             self.assertEqual(resp.status_code, 201)
 
             resp = client.post('/seasons',
@@ -163,3 +162,34 @@ class SeasonRouteTestCase(TestCase):
                                json={"season": "I", "start_date": "2024-08-15"})
             json = resp.get_data(as_text=True)
             self.assertIn("A similar season already exists for the given year.", json)
+
+
+class QuarterRouteTestCase(TestCase):
+    """ tests quarter routes """
+
+    def test_add_quarter(self):
+        """ tests adding a new quarter """
+
+        with app.test_client() as client:
+
+            resp = client.post('/quarters')
+            json = resp.get_data(as_text=True)
+            self.assertIn("You must be logged in for this action.", json)
+
+            with client.session_transaction() as change_session:
+                change_session["user_id"] = 1
+
+            resp = client.post('/quarters',
+                               json={"month": 1, "season_id": 2, "start_date": "2022-02-22"})
+            resp.get_data(as_text=True)
+            self.assertEqual(resp.status_code, 201)
+
+            resp = client.post('/quarters',
+                               json={"month": 1})
+            json = resp.get_data(as_text=True)
+            self.assertIn("A new quarter requires a month, season id, and start date.", json)
+
+            resp = client.post('/quarters',
+                               json={"month": 1, "start_date": "2022-08-15", "season_id": 2})
+            json = resp.get_data(as_text=True)
+            self.assertIn("A similar quarter already exists for the given season.", json)

@@ -5,6 +5,7 @@ from auth import login_required
 from judge import *
 from competitor import *
 from season import *
+from quarter import *
 import os
 
 
@@ -101,7 +102,7 @@ def competitor():
 @app.route('/seasons', methods=["POST"])
 @login_required
 def season():
-    """ create a season """
+    """ create a new season """
 
     try:
         season = request.json["season"]
@@ -110,11 +111,31 @@ def season():
         error = "A new season requires a season and start date."
         print(error)
         return jsonify(error), 400
-
-    """ create a new season """
     
     try:
         add_season(season, start_date)
+        return jsonify(success=True), 201
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
+@app.route('/quarters', methods=["POST"])
+@login_required
+def quarter():
+    """ create a new quarter """
+
+    try:
+        month = request.json["month"]
+        season_id = request.json["season_id"]
+        start_date = datetime.strptime(request.json["start_date"], '%Y-%m-%d')
+    except:
+        error = "A new quarter requires a month, season id, and start date."
+        print(error)
+        return jsonify(error), 400
+    
+    try:
+        add_quarter(month, season_id, start_date)
         return jsonify(success=True), 201
     except Exception as error:
         print(error)
