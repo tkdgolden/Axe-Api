@@ -6,6 +6,7 @@ from judge import *
 from competitor import *
 from season import *
 from quarter import *
+from lap import *
 import os
 
 
@@ -136,6 +137,29 @@ def quarter():
     
     try:
         add_quarter(month, season_id, start_date)
+        return jsonify(success=True), 201
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
+@app.route('/laps', methods=["POST"])
+@login_required
+def lap():
+    """ create a new lap """
+
+    try:
+        counter = request.json["lap"]
+        quarter_id = request.json["quarter_id"]
+        discipline = request.json["discipline"]
+        start_date = datetime.strptime(request.json["start_date"], '%Y-%m-%d')
+    except:
+        error = "A new lap requires a lap, quarter id, discipline, and start date."
+        print(error)
+        return jsonify(error), 400
+    
+    try:
+        add_lap(quarter_id, counter, discipline, start_date)
         return jsonify(success=True), 201
     except Exception as error:
         print(error)

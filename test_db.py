@@ -155,7 +155,7 @@ class LapTestCase(TestCase):
         CUR.execute(""" SELECT * FROM laps """)
         all_laps = CUR.fetchall()
 
-        self.assertIn([4, 2, 2, 'hatchet', datetime.date(2024, 8, 15)], all_laps)
+        self.assertIn([5, 2, 2, 'hatchet', datetime.date(2024, 8, 15)], all_laps)
 
 class EnrollmentTestCase(TestCase):
     """ testing methods involving enrollment table """

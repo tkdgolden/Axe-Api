@@ -193,3 +193,34 @@ class QuarterRouteTestCase(TestCase):
                                json={"month": 1, "start_date": "2022-08-15", "season_id": 2})
             json = resp.get_data(as_text=True)
             self.assertIn("A similar quarter already exists for the given season.", json)
+
+
+class LapRouteTestCase(TestCase):
+    """ tests lap routes """
+
+    def test_add_lap(self):
+        """ tests adding a new lap """
+
+        with app.test_client() as client:
+
+            resp = client.post('/laps')
+            json = resp.get_data(as_text=True)
+            self.assertIn("You must be logged in for this action.", json)
+
+            with client.session_transaction() as change_session:
+                change_session["user_id"] = 1
+
+            resp = client.post('/laps',
+                               json={"lap": 3, "quarter_id": 2, "discipline": "knives", "start_date": "2022-08-20"})
+            resp.get_data(as_text=True)
+            self.assertEqual(resp.status_code, 201)
+
+            resp = client.post('/laps',
+                               json={"lap": 3, "quarter_id": 2, "start_date": "2022-08-15"})
+            json = resp.get_data(as_text=True)
+            self.assertIn("A new lap requires a lap, quarter id, discipline, and start date.", json)
+
+            resp = client.post('/laps',
+                               json={"lap": 3, "quarter_id": 2, "discipline": "knives", "start_date": "2022-08-20"})
+            json = resp.get_data(as_text=True)
+            self.assertIn("A similar lap already exists for the given quarter.", json)
