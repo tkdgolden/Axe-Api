@@ -111,7 +111,7 @@ class SeasonTestCase(TestCase):
         CUR.execute(""" SELECT * FROM seasons """)
         all_seasons = CUR.fetchall()
 
-        self.assertIn([3, 'III', datetime.date(2023, 2, 12)], all_seasons)
+        self.assertIn([4, 'III', datetime.date(2023, 2, 12)], all_seasons)
 
 class QuarterTestCase(TestCase):
     """ testing methods involving quarters table """
@@ -126,7 +126,7 @@ class QuarterTestCase(TestCase):
         """ tests adding a new quarter """
 
         with self.assertRaises(Exception):
-            add_quarter(1, 3, '2024-01-20')
+            add_quarter(1, 4, '2024-01-20')
 
         add_quarter(6, 1, '2024-12-12')
 

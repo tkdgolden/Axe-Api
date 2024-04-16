@@ -1,8 +1,10 @@
+from datetime import datetime
 from flask import Flask, jsonify, request, session, json
 from db import *
 from auth import login_required
 from judge import *
 from competitor import *
+from season import *
 import os
 
 
@@ -55,7 +57,7 @@ def check_judge():
     
 
 
-@app.route('/competitors', methods=["GET", "POST", "PUT"])
+@app.route('/competitors', methods=["POST", "PUT"])
 @login_required
 def competitor():
     """ create or edit competitor """
@@ -94,3 +96,26 @@ def competitor():
         except Exception as error:
             print(error)
             return jsonify(error = str(error)), 400
+        
+
+@app.route('/seasons', methods=["POST"])
+@login_required
+def season():
+    """ create a season """
+
+    try:
+        season = request.json["season"]
+        start_date = datetime.strptime(request.json["start_date"], '%Y-%m-%d')
+    except:
+        error = "A new season requires a season and start date."
+        print(error)
+        return jsonify(error), 400
+
+    """ create a new season """
+    
+    try:
+        add_season(season, start_date)
+        return jsonify(success=True), 201
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400

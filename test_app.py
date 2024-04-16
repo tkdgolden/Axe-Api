@@ -1,3 +1,4 @@
+import datetime
 from unittest import TestCase
 from app import app
 from db import *
@@ -130,3 +131,35 @@ class CompetitorRouteTestCase(TestCase):
                                json={"first_name": "david", "last_name": "duffey"})
             json = resp.get_data(as_text=True)
             self.assertIn("A competitor requires an id to edit.", json)
+
+
+class SeasonRouteTestCase(TestCase):
+    """ tests season routes """
+
+    def test_add_season(self):
+        """ tests adding a new season """
+
+        with app.test_client() as client:
+
+            resp = client.post('/seasons')
+            json = resp.get_data(as_text=True)
+            self.assertIn("You must be logged in for this action.", json)
+
+            with client.session_transaction() as change_session:
+                change_session["user_id"] = 1
+
+            resp = client.post('/seasons',
+                               json={"season": "I", "start_date": "2022-02-22"})
+            resp.get_data(as_text=True)
+            print(resp.data)
+            self.assertEqual(resp.status_code, 201)
+
+            resp = client.post('/seasons',
+                               json={"season": "I"})
+            json = resp.get_data(as_text=True)
+            self.assertIn("A new season requires a season and start date.", json)
+
+            resp = client.post('/seasons',
+                               json={"season": "I", "start_date": "2024-08-15"})
+            json = resp.get_data(as_text=True)
+            self.assertIn("A similar season already exists for the given year.", json)
