@@ -299,3 +299,135 @@ class EnrollmentRouteTestCase(TestCase):
 
         self.assertIn([2, None, 2], all_enrollment)
         self.assertIn([None, 1, 3], all_enrollment)
+
+
+class TournamentRouteTestCase(TestCase):
+    """ tests tournament routes """
+
+    def test_add_tournament(self):
+        """ tests adding a new tournament """
+
+        with app.test_client() as client:
+
+            resp = client.post('/tournaments')
+            json = resp.get_data(as_text=True)
+            self.assertIn("You must be logged in for this action.", json)
+
+            with client.session_transaction() as change_session:
+                change_session["user_id"] = 1
+
+            resp = client.post('/tournaments',
+                               json={"name": "Go, Fight, Win!", "discipline": "hatchet", "date": "2022-08-15"})
+            resp.get_data(as_text=True)
+            self.assertEqual(resp.status_code, 201)
+
+            resp = client.post('/tournaments',
+                               json={"discipline": "hatchet", "date": "2022-08-15"})
+            json = resp.get_data(as_text=True)
+            self.assertIn("A new tournament requires a name, discipline and date.", json)
+
+            resp = client.post('/tournaments',
+                               json={"name": "Go, Fight, Win!", "discipline": "hatchet", "date": "2022-08-15"})
+            json = resp.get_data(as_text=True)
+            self.assertIn("A similar tournament already exists.", json)
+
+        CUR.execute(""" SELECT * FROM tournaments """)
+        all_tournaments = CUR.fetchall()
+
+        self.assertIn([3, 'Go, Fight, Win!', 'hatchet', datetime.date(2022, 8, 15), True, None, False], all_tournaments)
+
+
+class RoundRouteTestCase(TestCase):
+    """ tests round routes """
+
+    def test_add_tournament(self):
+        """ tests adding a new round for a tournament """
+
+        with app.test_client() as client:
+
+            resp = client.post('/rounds')
+            json = resp.get_data(as_text=True)
+            self.assertIn("You must be logged in for this action.", json)
+
+            with client.session_transaction() as change_session:
+                change_session["user_id"] = 1
+
+            resp = client.post('/rounds',
+                               json={"tournament_id": 2, "bye_array": "{0, 0, 0, 0}", "matches_array": "{200, 201, 202, 203}", "which_round": "C"})
+            resp.get_data(as_text=True)
+            self.assertEqual(resp.status_code, 201)
+
+            resp = client.post('/rounds',
+                               json={"tournament_id": 2, "bye_array": "{0, 0, 0, 0}", "matches_array": "{200, 201, 202, 203}"})
+            json = resp.get_data(as_text=True)
+            self.assertIn("A new round requires a tournament id, matches array, bye array, and which round.", json)
+
+        CUR.execute(""" SELECT * FROM rounds """)
+        all_rounds = CUR.fetchall()
+
+        self.assertIn([3, [0, 0, 0, 0], [200, 201, 202, 203], 2, 'C'], all_rounds)
+
+
+class MatchRouteTestCase(TestCase):
+    """ tests matches routes """
+
+    def test_add_match(self):
+        """ tests adding a new match to tournament or lap """
+
+        with app.test_client() as client:
+
+            resp = client.patch('/matches/1')
+            json = resp.get_data(as_text=True)
+            self.assertIn("You must be logged in for this action.", json)
+
+            with client.session_transaction() as change_session:
+                change_session["user_id"] = 1
+
+            resp = client.post('/matches',
+                               json={"player_2_id": 1, "player_1_id": 2, "lap_id": 1})
+            resp.get_data(as_text=True)
+            self.assertEqual(resp.status_code, 201)
+
+            resp = client.post('/matches',
+                               json={"player_2_id": 1, "player_1_id": 2, "tournament_id": 1})
+            resp.get_data(as_text=True)
+            self.assertEqual(resp.status_code, 201)
+
+            resp = client.post('/matches',
+                               json={"player_2_id": 1, "player_1_id": 2, "tournament_id": 1, "lap_id": 1})
+            json = resp.get_data(as_text=True)
+            self.assertIn("A new match requires a plaery 1 id, player 2 id, and either a tournament id or lap id.", json)
+
+        CUR.execute(""" SELECT * FROM matches """)
+        all_matches = CUR.fetchall()
+
+        self.assertIn([3, 2, 1, None, None, 1, None, None, None, None, None], all_matches)
+
+        self.assertIn([4, 2, 1, None, 1, None, None, None, None, None, None], all_matches)
+
+    def test_finish_match(self):
+        """ tests updating a completed match route """
+
+        with app.test_client() as client:
+
+            resp = client.patch('/matches/1')
+            json = resp.get_data(as_text=True)
+            self.assertIn("You must be logged in for this action.", json)
+
+            with client.session_transaction() as change_session:
+                change_session["user_id"] = 1
+
+            resp = client.patch('/matches/1',
+                               json={"winner_id": 1, "discipline": "hatchet", "judge_id": 2, "dt": datetime.datetime(2022, 8, 15, 12, 24), "player_2_total": 16, "player_1_total": 18})
+            resp.get_data(as_text=True)
+            self.assertEqual(resp.status_code, 201)
+
+            resp = client.patch('/matches/1',
+                               json={"winner_id": 1, "discipline": "hatchet", "judge_id": 2, "dt": datetime.datetime(2022, 8, 15, 12, 24)})
+            json = resp.get_data(as_text=True)
+            self.assertIn("A completed match requires a match id, winner id, discipline, judge id, date/time, and totals for both players.", json)
+
+        CUR.execute(""" SELECT * FROM matches """)
+        all_matches = CUR.fetchall()
+
+        self.assertIn([1, 1, 2, 1, 1, None, 'hatchet', 2, datetime.datetime(2022, 8, 15, 12, 24), 18, 16], all_matches)

@@ -209,7 +209,7 @@ class TournamentTestCase(TestCase):
         CUR.execute(""" SELECT * FROM tournaments """)
         all_tournaments = CUR.fetchall()
 
-        self.assertIn([3, 'Fight Test', 'Knives', datetime.date(2024, 12, 22), True, None, False], all_tournaments)
+        self.assertIn([4, 'Fight Test', 'Knives', datetime.date(2024, 12, 22), True, None, False], all_tournaments)
 
     def test_update_tournament_enrollment(self):
         """ tests update tournament enrollment """
@@ -242,7 +242,7 @@ class RoundTestCase(TestCase):
         CUR.execute(""" SELECT * FROM rounds """)
         all_rounds = CUR.fetchall()
 
-        self.assertIn([3, [105, 106], [0, 0], 1, 'B'], all_rounds)
+        self.assertIn([4, [105, 106], [0, 0], 1, 'B'], all_rounds)
 
 class MatchTestCase(TestCase):
     """ testing methods involving matches table """
@@ -255,17 +255,17 @@ class MatchTestCase(TestCase):
         CUR.execute(""" SELECT * FROM matches WHERE player_1_id = 2 AND player_2_id = 3 """)
         all_matches = CUR.fetchall()
 
-        self.assertIn([4, 2, 3, None, 1, None, None, None, None, None, None], all_matches)
+        self.assertIn([6, 2, 3, None, 1, None, None, None, None, None, None], all_matches)
 
     def test_add_unscored_season_match(self):
         """ tests adding a new empty match in a season """
 
         add_unscored_season_match(2, 3, 1)
 
-        CUR.execute(""" SELECT * FROM matches WHERE match_id = 3 """)
+        CUR.execute(""" SELECT * FROM matches WHERE match_id = 5 """)
         all_matches = CUR.fetchall()
 
-        self.assertIn([3, 2, 3, None, None, 1, None, None, None, None, None], all_matches)
+        self.assertIn([5, 2, 3, None, None, 1, None, None, None, None, None], all_matches)
 
     def test_update_completed_match(self):
         """ tests updating a match with complete data """

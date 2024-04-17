@@ -8,6 +8,9 @@ from season import *
 from quarter import *
 from lap import *
 from enrollment import *
+from tournament import *
+from round import *
+from match import *
 import os
 
 
@@ -191,6 +194,111 @@ def enrollment():
     
     try:
         add_enrollment(competitor_id, season_id, tournament_id)
+        return jsonify(success=True), 201
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
+@app.route('/tournaments', methods=["POST"])
+@login_required
+def tournaments():
+    """ adds a new tournament """
+
+    try:
+        tournament_name = request.json["name"]
+        discipline = request.json["discipline"]
+        tournament_date = request.json["date"]
+    except:
+        error = "A new tournament requires a name, discipline and date."
+        print(error)
+        return jsonify(error), 400
+    
+    try:
+        add_tournament(tournament_name, discipline, tournament_date)
+        return jsonify(success=True), 201
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
+@app.route('/rounds', methods=["POST"])
+@login_required
+def rounds():
+    """ adds a new round """
+
+    try:
+        tournament_id = request.json["tournament_id"]
+        matches_array = request.json["matches_array"]
+        bye_array = request.json["bye_array"]
+        which_round = request.json["which_round"]
+    except:
+        error = "A new round requires a tournament id, matches array, bye array, and which round."
+        print(error)
+        return jsonify(error), 400
+    
+    try:
+        add_round(tournament_id, matches_array, bye_array, which_round)
+        return jsonify(success=True), 201
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
+@app.route('/matches', methods=["POST"])
+@login_required
+def add_matches():
+    """ adds a new match """
+    
+    try:
+        player_1_id = request.json["player_1_id"]
+        player_2_id = request.json["player_2_id"]
+
+        if ("lap_id" in request.json and "tournament_id" in request.json):
+            raise
+        elif ("lap_id" in request.json):
+            lap_id = request.json["lap_id"]
+            tournament_id = None
+        elif ("tournament_id" in request.json):
+            tournament_id = request.json["tournament_id"]
+            lap_id = None
+        else:
+            raise
+    except:
+        error = "A new match requires a plaery 1 id, player 2 id, and either a tournament id or lap id."
+        print(error)
+        return jsonify(error), 400
+    
+    try:
+        if (lap_id):
+            add_unscored_season_match(player_1_id, player_2_id, lap_id)
+        elif (tournament_id):
+            add_unscored_tournament_match(player_1_id, player_2_id, tournament_id)
+        return jsonify(success=True), 201
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
+@app.route('/matches/<match_id>', methods=["PATCH"])
+@login_required
+def finish_matches(match_id):
+    """ updates a completed match """
+    
+    try:
+        winner_id = request.json["winner_id"]
+        discipline = request.json["discipline"]
+        judge_id = request.json["judge_id"]
+        dt = request.json["dt"]
+        player_2_total = request.json["player_2_total"]
+        player_1_total = request.json["player_1_total"]
+    except:
+        error = "A completed match requires a match id, winner id, discipline, judge id, date/time, and totals for both players."
+        print(error)
+        return jsonify(error), 400
+    
+    try:
+        update_completed_match(match_id, winner_id, discipline, judge_id, dt, player_1_total, player_2_total)
         return jsonify(success=True), 201
     except Exception as error:
         print(error)
