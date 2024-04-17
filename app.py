@@ -11,6 +11,7 @@ from enrollment import *
 from tournament import *
 from round import *
 from match import *
+from score import *
 import os
 
 
@@ -299,6 +300,39 @@ def finish_matches(match_id):
     
     try:
         update_completed_match(match_id, winner_id, discipline, judge_id, dt, player_1_total, player_2_total)
+        return jsonify(success=True), 201
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
+@app.route('/scores', methods=["POST"])
+@login_required
+def add_scores():
+    """ adds a new score """
+    
+    try:
+        competitor_id = request.json["competitor_id"]
+        match_id = request.json["match_id"]
+        quick_points = request.json["quick_points"]
+        sequence = request.json["sequence"]
+        throw1 = request.json["throw1"]
+        throw2 = request.json["throw2"]
+        throw3 = request.json["throw3"]
+        throw4 = request.json["throw4"]
+        throw5 = request.json["throw5"]
+        throw6 = request.json["throw6"]
+        throw7 = request.json["throw7"]
+        throw8 = request.json["throw8"]
+        total = request.json["total"]
+        win = request.json["win"]
+    except:
+        error = "A new score requires a competitor id, match id, quick points, sequence, scores for each of 8 throws, a total, and if the player won or not."
+        print(error)
+        return jsonify(error), 400
+    
+    try:
+        add_player_score(competitor_id, match_id, quick_points, sequence, throw1, throw2, throw3, throw4, throw5, throw6, throw7, throw8, total, win)
         return jsonify(success=True), 201
     except Exception as error:
         print(error)

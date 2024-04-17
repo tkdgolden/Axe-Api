@@ -431,3 +431,34 @@ class MatchRouteTestCase(TestCase):
         all_matches = CUR.fetchall()
 
         self.assertIn([1, 1, 2, 1, 1, None, 'hatchet', 2, datetime.datetime(2022, 8, 15, 12, 24), 18, 16], all_matches)
+
+
+class ScoreRouteTestCase(TestCase):
+    """ tests score routes """
+
+    def test_add_score(self):
+        """ tests adding a new score """
+
+        with app.test_client() as client:
+
+            resp = client.post('/scores')
+            json = resp.get_data(as_text=True)
+            self.assertIn("You must be logged in for this action.", json)
+
+            with client.session_transaction() as change_session:
+                change_session["user_id"] = 1
+
+            resp = client.post('/scores',
+                               json={"competitor_id": 1, "match_id": 3, "quick_points": 3, "sequence": 'RED A (Top Left),GREEN B (Top Right),ORANGE D (Bottom Right),BLUE C (Bottom Left),ORANGE D (Bottom Right),BLUE C (Bottom Left),RED A (Top Left),GREEN B (Top Right)', "throw1": 1, "throw2": 2, "throw3": 3, "throw4": 4, "throw5": 5, "throw6": 6, "throw7": 7, "throw8": 8, "total": 39, "win": True})
+            resp.get_data(as_text=True)
+            self.assertEqual(resp.status_code, 201)
+
+            resp = client.post('/scores',
+                               json={"competitor_id": 1, "match_id": 3, "quick_points": 3, "sequence": 'RED A (Top Left),GREEN B (Top Right),ORANGE D (Bottom Right),BLUE C (Bottom Left),ORANGE D (Bottom Right),BLUE C (Bottom Left),RED A (Top Left),GREEN B (Top Right)', "throw1": 1, "throw2": 2, "throw3": 3, "throw4": 4, "throw5": 5, "throw6": 6, "throw7": 7, "throw8": 8, "total": 39})
+            json = resp.get_data(as_text=True)
+            self.assertIn("A new score requires a competitor id, match id, quick points, sequence, scores for each of 8 throws, a total, and if the player won or not.", json)
+
+        CUR.execute(""" SELECT * FROM scores WHERE match_id = 3 """)
+        all_scores = CUR.fetchall()[0]
+
+        self.assertEqual('RED A (Top Left),GREEN B (Top Right),ORANGE D (Bottom Right),BLUE C (Bottom Left),ORANGE D (Bottom Right),BLUE C (Bottom Left),RED A (Top Left),GREEN B (Top Right)', all_scores["sequence"])
