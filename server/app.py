@@ -21,6 +21,8 @@ app.secret_key = os.urandom(12).hex()
 db_connect()
 
 
+
+
 @app.route("/judges/new", methods=["POST"])
 @login_required
 def new_judge():

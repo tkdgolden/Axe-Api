@@ -1,9 +1,9 @@
 -- from the terminal run:
 -- psql < test_seed.sql
 
-DROP DATABASE IF EXISTS test_axe;
-CREATE DATABASE test_axe;
-\c test_axe
+-- DROP DATABASE IF EXISTS test_axe;
+-- CREATE DATABASE test_axe;
+-- \c test_axe
 
 CREATE TABLE judges (
     judge_id SERIAL PRIMARY KEY,
