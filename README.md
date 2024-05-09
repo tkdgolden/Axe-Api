@@ -6,3 +6,4 @@ PostgreSQL
 psycopg2 to perform SQL statements
 ## API Layer
 Flask application to handle server routing to different endpoints that run processes in the database management layer.
+
