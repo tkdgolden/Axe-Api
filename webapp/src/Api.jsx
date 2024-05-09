@@ -12,19 +12,26 @@ const BASE_URL = import.meta.env.REACT_APP_BASE_URL || "http://localhost:5000";
  */
 
 class AxeApi {
+  static token;
 
   static async request(endpoint, data = {}, method = "get") {
     console.log("API Call:", endpoint, data, method);
 
+    // can get token from local storage on page refresh without having to log back in
+    if (!AxeApi.token) {
+      AxeApi.token = localStorage.token;
+    }
+
     //there are multiple ways to pass an authorization token, this is how you pass it in the header.
     //this has been provided to show you another way to pass the token. you are only expected to read this code for this project.
     const url = `${BASE_URL}/${endpoint}`;
+    const headers = { Authorization: `${AxeApi.token}` };
     const params = (method === "get")
       ? data
       : {};
 
     try {
-      return (await axios({ url, method, data, params })).data;
+      return (await axios({ url, method, data, params, headers })).data;
     } catch (err) {
       console.error("API Error:", err.response);
       let message = err.response.data.error.message;
@@ -44,10 +51,9 @@ class AxeApi {
 
     try {
       let res = await this.request('judges/verify', data, "post");
-      if (res.success === "true") {
-        return true;
-      }
-      else return false;
+      AxeApi.token = res['token'];
+      localStorage.token = res['token'];
+      return true;
     }
     catch {
       return false;
@@ -60,13 +66,11 @@ class AxeApi {
    */
   static async register(data) {
     try {
-      let res = await this.request('auth/register', data, "post");
-      AxeApi.token = res.token;
-      localStorage.token = res.token;
-      return res;
+      let res = await this.request('judges/new', data, "post");
+      return res['success'];
     }
     catch (e) {
-      return redirect("/login");
+      return redirect("/register");
     }
   }
 

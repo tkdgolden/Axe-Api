@@ -1,7 +1,8 @@
 from datetime import datetime
 from flask import Flask, jsonify, request, session, json
+import jwt
 from db import *
-from auth import login_required
+from auth import login_required, SECRET_KEY
 from judge import *
 from competitor import *
 from season import *
@@ -16,11 +17,10 @@ import os
 from flask_cors import CORS
 
 app = Flask(__name__)
-app.secret_key = os.urandom(12).hex()
+app.secret_key = SECRET_KEY
 
 db_connect()
 CORS(app, supports_credentials=True)
-
 
 
 @app.route("/judges/new", methods=["POST"])
@@ -47,7 +47,7 @@ def new_judge():
 @app.route("/judges/verify", methods=["POST"])
 def check_judge():
     """ verify a judge """
-    
+
     try:
         name = request.json["name"]
         password = request.json["password"]
@@ -58,8 +58,8 @@ def check_judge():
 
     try:
         judge_id = verify_judge(name, password)
-        session["user_id"] = judge_id
-        return jsonify(success = True)
+        token = jwt.encode({'user_id': judge_id}, SECRET_KEY, algorithm='HS256')
+        return jsonify({'token': token})
     except Exception as error:
         print(error)
         return jsonify(error = str(error)), 400

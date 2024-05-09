@@ -12,7 +12,7 @@ const NavBar = () => {
   const navigate = useNavigate();
   const logout = () => {
     setUser("player");
-    localStorage.clear();
+    localStorage.setItem("user", "player");
     navigate("/");
   }
 
@@ -27,6 +27,9 @@ const NavBar = () => {
           <Nav className="ml-auto" navbar>
             <NavItem>
               <button onClick={logout}>Log Out {user}</button>
+            </NavItem>
+            <NavItem>
+              <NavLink to="/register">Register a New Judge</NavLink>
             </NavItem>
           </Nav>
         </Navbar>

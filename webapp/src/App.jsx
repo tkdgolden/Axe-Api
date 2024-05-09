@@ -10,12 +10,14 @@ import React, { useEffect, useState } from 'react';
  */
 const App = () => {
   const [user, setUser] = useState("player");
-
+  console.log(user);
+  console.log(localStorage.getItem("user"));
   useEffect(function setUserOnRender() {
-    if (localStorage.getItem("user") !== "player") {
+    if (localStorage.getItem("user") !== ("player" || null)) {
       setUser(localStorage.getItem("user"));
     }
   }, [localStorage.user]);
+  console.log(user);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

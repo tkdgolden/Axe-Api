@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom"
 import NavBar from './NavBar.jsx';
 import Home from './Home.jsx';
 import LoginForm from './LoginForm.jsx';
+import RegisterForm from "./RegisterForm.jsx";
 import UserContext from './UserContext';
 import React, { useContext } from 'react';
 
@@ -20,6 +21,7 @@ const Router = () => {
                     <NavBar />
                     <Routes>
                         <Route path="/" element={<Home />}></Route>
+                        <Route path="/register" element={<RegisterForm />}></Route>
                         <Route path="*" element={<Navigate to="/" />}></Route>
                     </Routes>
                 </BrowserRouter>

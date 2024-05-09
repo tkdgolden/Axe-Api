@@ -8,7 +8,7 @@ import React, { useContext } from 'react';
 const Home = () => {
     const { user, setUser } = useContext(UserContext);
 
-    if (user) {
+    if (user !== "player") {
         return (
             <>
                 <h1>Judge Homepage</h1>

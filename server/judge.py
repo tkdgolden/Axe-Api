@@ -41,3 +41,18 @@ def verify_judge(name, password):
         raise ValueError("The password didn't match.")
     else:
         return all_judges[0]["judge_id"]
+    
+def get_judge(judge_id):
+    """ get judge entry from id """
+
+    try:
+        CUR.execute(""" SELECT * FROM judges WHERE judge_id = %(judge_id)s """, {'judge_id': judge_id})
+        judge = CUR.fetchall()
+
+    except:
+        conn.rollback()
+        raise
+
+    if len(judge) != 1:
+        raise ValueError("The judge was not found.")
+    

@@ -7,7 +7,7 @@ import UserContext from './UserContext';
  * controlled form for submitting username and password to log in
  * @returns component
  */
-const LoginForm = () => {
+const RegisterForm = () => {
     const INITIAL_STATE = {name: "", password: ""};
     const [fData, setFormData] = useState(INITIAL_STATE);
     const navigate = useNavigate();
@@ -23,10 +23,8 @@ const LoginForm = () => {
 
     const handleSubmit = async evt => {
         evt.preventDefault();
-        const success = await AxeApi.login(fData);
-        if (success === true) {
-            setUser(fData.name);
-            localStorage.user = fData.name;
+        const success = await AxeApi.register(fData);
+        if (success === "true") {
             navigate("/");
         }
         else {
@@ -52,9 +50,9 @@ const LoginForm = () => {
                 onChange={handleChange}
                 name="password"
             />
-            <button>Log In</button>
+            <button>Register</button>
         </form>
     );
 };
 
-export default LoginForm
+export default RegisterForm
