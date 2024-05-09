@@ -13,13 +13,13 @@ from round import *
 from match import *
 from score import *
 import os
-
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.secret_key = os.urandom(12).hex()
 
 db_connect()
-
+CORS(app, supports_credentials=True)
 
 
 
@@ -47,7 +47,7 @@ def new_judge():
 @app.route("/judges/verify", methods=["POST"])
 def check_judge():
     """ verify a judge """
-
+    
     try:
         name = request.json["name"]
         password = request.json["password"]
