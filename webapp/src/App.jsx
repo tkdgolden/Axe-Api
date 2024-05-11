@@ -1,4 +1,3 @@
-import './App.css';
 import Router from './Router';
 import UserContext from './UserContext.jsx';
 import React, { useEffect, useState } from 'react';
@@ -10,8 +9,9 @@ import React, { useEffect, useState } from 'react';
  */
 const App = () => {
   const [user, setUser] = useState("player");
+  
   console.log(user);
-  console.log(localStorage.getItem("user"));
+
   useEffect(function setUserOnRender() {
     if (localStorage.getItem("user") !== ("player" || null)) {
       setUser(localStorage.getItem("user"));
