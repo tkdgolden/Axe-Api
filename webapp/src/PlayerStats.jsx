@@ -6,10 +6,11 @@ import { Table } from 'reactstrap';
  * welcomes guest or user
  * @returns component
  */
-const PlayerHome = () => {
+const PlayerStats = () => {
 
     return (
         <>
+            <h1>Player Stats View</h1>
             <Table dark>
                 <thead>
                     <tr>
@@ -76,4 +77,4 @@ const PlayerHome = () => {
     );
 };
 
-export default PlayerHome
+export default PlayerStats

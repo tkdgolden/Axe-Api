@@ -1,4 +1,5 @@
 import { Navbar, NavbarBrand, Nav, NavItem, NavLink, InputGroup } from "reactstrap";
+import Sidebar from "./Sidebar";
 
 
 const PlayerNavBar = () => {
@@ -14,6 +15,7 @@ const PlayerNavBar = () => {
                         </InputGroup>
                     </Nav>
             </Navbar>
+            <Sidebar></Sidebar>
         </>
     );
 }

@@ -7,10 +7,12 @@ import UserContext from './UserContext';
 import React, { useContext } from 'react';
 import JudgeNavBar from "./JudgeNavBar.jsx";
 import PlayerNavBar from "./PlayerNavBar.jsx";
-import PlayerHome from "./PlayerHome.jsx";
+import OverallStats from "./OverallStats.jsx";
 import SeasonStats from "./SeasonStats";
 import TournamentStats from "./TournamentStats";
+import Sidebar from "./Sidebar.jsx";
 import DisciplineStats from "./DisciplineStats";
+import PlayerStats from "./PlayerStats.jsx";
 
 /**
  * controls which route's are active based on whether the current user is logged in or not
@@ -40,16 +42,22 @@ const Router = () => {
     return (
         <>
             <BrowserRouter>
-                <PlayerNavBar />
-                <h1>This one</h1>
-                <Routes>
-                    <Route path="/" element={<PlayerHome />}></Route>
-                    <Route path="/login" element={<LoginForm />}></Route>
-                    <Route path="/season-stats" element={<SeasonStats />}></Route>
-                    <Route path="/tournament-stats" element={<TournamentStats />}></Route>
-                    <Route path="/discipline-stats" element={<DisciplineStats />}></Route>
-                    <Route path="*" element={<Navigate to="/" />}></Route>
-                </Routes>
+                <div className="wrapper">
+                    <PlayerNavBar />
+                    <div className="main-panel">
+                        <Sidebar/>
+                        <Routes>
+                            <Route path="/" element={<OverallStats />}></Route>
+                            <Route path="/login" element={<LoginForm />}></Route>
+                            <Route path="/season-stats" element={<SeasonStats />}></Route>
+                            <Route path="/tournament-stats" element={<TournamentStats />}></Route>
+                            <Route path="/discipline-stats" element={<DisciplineStats />}></Route>
+                            <Route path="/player-stats" element={<PlayerStats />}></Route>
+                            <Route path="*" element={<Navigate to="/" />}></Route>
+                        </Routes>
+                    </div>
+                </div>
+
             </BrowserRouter>
         </>
     );

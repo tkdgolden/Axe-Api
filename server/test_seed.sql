@@ -131,4 +131,5 @@ CREATE TABLE scores (
 );
 
 INSERT INTO scores (competitor_id, match_id, quick_points, sequence, throw1, throw2, throw3, throw4, throw5, throw6, throw7, throw8, total, win)
-    VALUES (1, 1, 2, 'ORANGE D (Bottom Right),BLUE C (Bottom Left),RED A (Top Left),GREEN B (Top Right),RED A (Top Left),GREEN B (Top Right),ORANGE D (Bottom Right),BLUE C (Bottom Left)', 2, 4, 2, 4, 2, 4, 2, 4, 25, TRUE);
+    VALUES (1, 1, 2, 'ORANGE D (Bottom Right),BLUE C (Bottom Left),RED A (Top Left),GREEN B (Top Right),RED A (Top Left),GREEN B (Top Right),ORANGE D (Bottom Right),BLUE C (Bottom Left)', 2, 4, 2, 4, 2, 4, 2, 4, 25, TRUE),
+    (2, 1, 4, 'ORANGE D (Bottom Right),BLUE C (Bottom Left),RED A (Top Left),GREEN B (Top Right),RED A (Top Left),GREEN B (Top Right),ORANGE D (Bottom Right),BLUE C (Bottom Left)',1, 8, 1, 8, 1, 8, 1, 8, 40, TRUE);

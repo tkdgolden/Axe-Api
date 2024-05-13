@@ -10,6 +10,7 @@ const SeasonStats = () => {
 
     return (
         <>
+            <h1>Season Stats View</h1>
             <Table dark>
                 <thead>
                     <tr>

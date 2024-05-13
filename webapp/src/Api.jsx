@@ -74,6 +74,16 @@ class AxeApi {
     }
   }
 
+  static async overall_stats() {
+    try {
+      let res = await this.request('/overall_stats');
+      return res;
+    }
+    catch (e) {
+      return false
+    }
+  }
+
 }
 
 export default AxeApi;

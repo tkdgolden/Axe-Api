@@ -15,6 +15,7 @@ from match import *
 from score import *
 import os
 from flask_cors import CORS
+from stats import *
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
@@ -336,6 +337,16 @@ def add_scores():
     try:
         add_player_score(competitor_id, match_id, quick_points, sequence, throw1, throw2, throw3, throw4, throw5, throw6, throw7, throw8, total, win)
         return jsonify(success=True), 201
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
+@app.route("/overall_stats")
+def overall_stats():
+    try:
+        stats = get_overall_stats()
+        return jsonify(stats)
     except Exception as error:
         print(error)
         return jsonify(error = str(error)), 400

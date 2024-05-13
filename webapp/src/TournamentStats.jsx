@@ -10,6 +10,7 @@ const TournamentStats = () => {
 
     return (
         <>
+            <h1>Tournament Stats View</h1>
             <Table dark>
                 <thead>
                     <tr>

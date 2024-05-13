@@ -10,6 +10,7 @@ const DisciplineStats = () => {
 
     return (
         <>
+            <h1>Discipline Stats View</h1>
             <Table dark>
                 <thead>
                     <tr>

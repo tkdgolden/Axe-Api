@@ -1,4 +1,4 @@
-import { Navbar, NavbarToggler, NavbarBrand, Collapse, Nav, NavItem, NavLink, InputGroup, Button } from "reactstrap";
+import { Navbar, NavbarToggler, NavbarBrand, Collapse, Nav, NavItem, NavLink, InputGroup } from "reactstrap";
 import { useContext, useState } from "react";
 import UserContext from "./UserContext";
 
