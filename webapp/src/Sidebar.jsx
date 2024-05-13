@@ -38,31 +38,32 @@ function Sidebar() {
                 <Nav>
                     <li>
                         <NavLink href="/" className="nav-link">
-                            <i className="icon-chart-bar-32" />
-                            <p>Overall Stats View!!!</p>
+                            <i className="tim-icons icon-trophy" />
+                            Overall Stats View
                         </NavLink>
                     </li>
                     <li>
                         <NavLink href="/season-stats" className="nav-link">
-                            <i className="icon-chart-bar-32" />
-                            <p>Season Stats View</p>
+                            <i className="tim-icons icon-chart-bar-32" />
+                            Season Stats View
                         </NavLink>
                     </li>
                     <li>
                         <NavLink href="/tournament-stats" className="nav-link">
-                            <i className="icon-chart-bar-32" />
-                            <p>Tournament Stats View</p>
+                            <i className="tim-icons icon-vector" />
+                            Tournament Stats View
                         </NavLink>
                     </li>
                     <li>
                         <NavLink href="/discipline-stats" className="nav-link">
-                            <i className="icon-chart-bar-32" />
-                            <p>Discipline Stats View</p>
+                            <i className="tim-icons icon-settings" />
+                            Discipline Stats View
                         </NavLink>
                     </li>
                     <li>
                         <InputGroup className="search-bar">
-                            <Input placeholder="SEARCH" type="text" />
+                            <i className="tim-icons icon-zoom-split" />
+                            <Input placeholder="SEARCH PLAYER" type="text" />
                         </InputGroup>
                     </li>
                 </Nav>

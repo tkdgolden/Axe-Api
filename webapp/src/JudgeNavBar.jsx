@@ -27,11 +27,15 @@ const JudgeNavBar = () => {
                     <Nav className="ml-auto" navbar>
                         <InputGroup>
                             <NavItem>
-                                <NavLink href="/register">Register New Judge</NavLink>
+                                <NavLink href="/register">
+                                    <i className="tim-icons icon-badge" />  
+                                    New Judge
+                                </NavLink>
                             </NavItem>
                         </InputGroup>
                         <InputGroup onClick={logout}>
-                            <NavItem>
+                            <NavItem style={{margin:"auto"}}>
+                                <i className="tim-icons icon-single-02" />  
                                 Log Out
                             </NavItem>
                         </InputGroup>

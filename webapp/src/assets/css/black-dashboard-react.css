@@ -11784,20 +11784,20 @@ hr {
         padding: 8px 8px; }
     .sidebar .nav li > a,
     .off-canvas-sidebar .nav li > a {
-      margin: 10px 15px 0;
+      margin: 0;
       border-radius: 30px;
-      color: #ffffff;
+      color: var(--default);
       display: block;
       text-decoration: none;
       position: relative;
       text-transform: uppercase;
       cursor: pointer;
-      font-size: 0.62475rem;
+      font-size: 12px;
       padding: 10px 8px;
       line-height: 1.625rem; }
     .sidebar .nav li:first-child > a,
     .off-canvas-sidebar .nav li:first-child > a {
-      margin: 0 15px; }
+      margin: 0; }
     .sidebar .nav li:hover:not(.active) > a p, .sidebar .nav li:hover:not(.active) > a i,
     .sidebar .nav li:focus:not(.active) > a p,
     .sidebar .nav li:focus:not(.active) > a i,
@@ -11880,7 +11880,7 @@ hr {
       line-height: 30px;
       width: 34px;
       text-align: center;
-      color: rgba(255, 255, 255, 0.8);
+      color: var(--default);
       position: relative; }
   .sidebar .logo,
   .off-canvas-sidebar .logo {
@@ -12052,6 +12052,10 @@ hr {
     margin-bottom: 0; }
   .main-panel .header {
     margin-bottom: 50px; }
+
+.main-panel.judge {
+  padding-left: 0px;
+}
 
 .perfect-scrollbar-on .main-panel {
   height: 100%;
@@ -12944,7 +12948,7 @@ textarea.form-control {
     margin-right: 1.5rem; }
 
 .search-bar {
-  margin-left: 30px; }
+  margin-left: 8px; }
   .search-bar .btn {
     margin: 0; }
   .search-bar.input-group {
@@ -12960,22 +12964,22 @@ textarea.form-control {
       color: rgba(255, 255, 255, 0.7); }
     .search-bar.input-group i {
       font-size: 20px;
-      color: #ffffff;
+      color: var(--default);
       margin-top: 0 !important; }
     .search-bar.input-group input {
       background: transparent;
       border: none !important;
       border-radius: 0;
-      padding: 12px !important;
+      padding: 0 !important;
       font-size: 12px;
       opacity: 0.5; }
       .search-bar.input-group input:focus {
         background: transparent; }
     .search-bar.input-group .form-control {
       opacity: 1;
-      color: #ffffff; }
+      color: white; }
       .search-bar.input-group .form-control::placeholder {
-        color: white; }
+        color: var(--default); }
 
 .modal-search .modal-dialog {
   max-width: 1000px;

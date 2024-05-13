@@ -10,7 +10,10 @@ const PlayerNavBar = () => {
                     <Nav className="ml-auto" navbar>
                         <InputGroup>
                             <NavItem>
-                                <NavLink href="/login">Login as Judge</NavLink>
+                                <NavLink href="/login">
+                                    <i className="tim-icons icon-key-25" />  
+                                    Login as Judge
+                                </NavLink>
                             </NavItem>
                         </InputGroup>
                     </Nav>

@@ -26,13 +26,17 @@ const Router = () => {
         return (
             <>
                 <BrowserRouter>
-                    <JudgeNavBar />
-                    <h1>This is the router</h1>
-                    <Routes>
-                        <Route path="/" element={<JudgeHome />}></Route>
-                        <Route path="/register" element={<RegisterForm />}></Route>
-                        <Route path="*" element={<Navigate to="/" />}></Route>
-                    </Routes>
+                    <div className="wrapper">
+                        <JudgeNavBar />
+                        <div className="judge main-panel">
+                            <Routes>
+                                <Route path="/" element={<JudgeHome />}></Route>
+                                <Route path="/register" element={<RegisterForm />}></Route>
+                                <Route path="*" element={<Navigate to="/" />}></Route>
+                            </Routes>
+                        </div>
+                    </div>
+
                 </BrowserRouter>
             </>
         );
