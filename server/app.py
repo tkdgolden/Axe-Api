@@ -342,10 +342,31 @@ def add_scores():
         return jsonify(error = str(error)), 400
     
 
-@app.route("/overall_stats")
+@app.route("/scores/all")
 def overall_stats():
     try:
         stats = get_overall_stats()
+        return jsonify(stats)
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
+@app.route("/seasons/all")
+def all_seasons():
+    try:
+        seasons = get_all_seasons()
+        return jsonify(seasons)
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
+@app.route("/seasons/<season_id>")
+def season_stats(season_id):
+    print(season_id)
+    try:
+        stats = get_season_stats(season_id)
         return jsonify(stats)
     except Exception as error:
         print(error)

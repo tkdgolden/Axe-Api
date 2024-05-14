@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import AxeApi from "../Api.jsx";
 
 
-const useGetOverallStats = () => {
+const useGetAllSeasons = () => {
     const [data, setData] = useState([]);
     
     async function getOverallStats() {
-        const dataResult = await AxeApi.overallStats();
+        const dataResult = await AxeApi.allSeasons();
         setData(dataResult);
     }
 
@@ -19,4 +19,4 @@ const useGetOverallStats = () => {
 
 
 
-export default useGetOverallStats;
+export default useGetAllSeasons;

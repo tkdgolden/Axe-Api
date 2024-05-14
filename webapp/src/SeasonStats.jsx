@@ -1,82 +1,55 @@
 import UserContext from './UserContext';
-import React, { useContext } from 'react';
-import { Table } from 'reactstrap';
+import React, { useContext, useState } from 'react';
+import { Table, UncontrolledDropdown, DropdownToggle, DropdownMenu, NavLink, DropdownItem } from 'reactstrap';
+import useGetAllSeasons from './hooks/useGetAllSeasons';
+import useGetSeason from './hooks/useGetSeason';
+import SeasonStatsTable from './SeasonStatsTable';
 
 /**
  * welcomes guest or user
  * @returns component
  */
 const SeasonStats = () => {
+    const seasons = useGetAllSeasons();
 
-    return (
-        <>
-            <div className='content'>
-                <h1>Season Stats View</h1>
-                <Table dark>
-                    <thead>
-                        <tr>
-                            <th>
-                                #
-                            </th>
-                            <th>
-                                First Name
-                            </th>
-                            <th>
-                                Last Name
-                            </th>
-                            <th>
-                                Username
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">
-                                1
-                            </th>
-                            <td>
-                                Mark
-                            </td>
-                            <td>
-                                Otto
-                            </td>
-                            <td>
-                                @mdo
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                2
-                            </th>
-                            <td>
-                                Jacob
-                            </td>
-                            <td>
-                                Thornton
-                            </td>
-                            <td>
-                                @fat
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                3
-                            </th>
-                            <td>
-                                Larry
-                            </td>
-                            <td>
-                                the Bird
-                            </td>
-                            <td>
-                                @twitter
-                            </td>
-                        </tr>
-                    </tbody>
-                </Table>
-            </div>
-        </>
-    );
+    if (seasons.length !== 0) {
+
+        return (
+            <>
+                <div className='content'>
+                    <h1>Season Stats View</h1>
+                    <UncontrolledDropdown>
+                        <DropdownToggle
+                            caret
+                            className="btn-icon"
+                            color="link"
+                            data-toggle="dropdown"
+                            type="button"
+                        >
+                            <i className="tim-icons icon-bullet-list-67" />
+                        </DropdownToggle>
+                        <DropdownMenu aria-labelledby="dropdownMenuLink">
+                            {seasons.map(season => 
+                                <DropdownItem key={season[0]}>
+                                    {season[1]} {season[2]}
+                                </DropdownItem>
+                            )}
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
+                    <SeasonStatsTable season_id={1} />
+                </div>
+            </>
+        );
+    }
+    else {
+        return (
+            <>
+                <div className='content'>
+                    <h2>Loading</h2>
+                </div>
+            </>
+        )
+    }
 };
 
 export default SeasonStats

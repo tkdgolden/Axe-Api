@@ -112,6 +112,10 @@ INSERT INTO matches (player_1_id, player_2_id, tournament_id)
     VALUES (1, 2, 1),
             (1, 3, 1);
 
+INSERT INTO matches (player_1_id, player_2_id, lap_id)
+    VALUES (1, 2, 1),
+            (1, 3, 2);
+
 CREATE TABLE scores (
     score_id SERIAL PRIMARY KEY,
     competitor_id INTEGER NOT NULL REFERENCES competitors,

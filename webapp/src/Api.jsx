@@ -74,13 +74,34 @@ class AxeApi {
     }
   }
 
-  static async overall_stats() {
+  static async overallStats() {
     try {
-      let res = await this.request('/overall_stats');
+      let res = await this.request('/scores/all');
       return res;
     }
     catch (e) {
-      return false
+      return false;
+    }
+  }
+
+  static async allSeasons() {
+    try {
+      let res = await this.request('/seasons/all');
+      return res;
+    }
+    catch (e) {
+      return false;
+    }
+  }
+
+  static async getSeason(season_id) {
+    try {
+      console.log(season_id);
+      let res = await this.request(`/seasons/${season_id}`);
+      return res;
+    }
+    catch (e) {
+      return false;
     }
   }
 

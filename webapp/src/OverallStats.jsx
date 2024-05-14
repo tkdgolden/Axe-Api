@@ -9,14 +9,14 @@ import useGetOverallStats from './hooks/useGetOverallStats.jsx';
  */
 const OverallStats = () => {
 
-    const [stats, setStats] = useGetOverallStats();
+    const stats = useGetOverallStats();
 
     if (stats.length !== 0) {
         return (
             <>
                 <div className="content">
                     <h1>Overall Stats View</h1>
-                    <Table dark hover>
+                    <Table hover>
                         <thead>
                             <tr>
                                 <th>
