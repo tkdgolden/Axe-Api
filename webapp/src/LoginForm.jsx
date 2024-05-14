@@ -8,11 +8,11 @@ import UserContext from './UserContext';
  * @returns component
  */
 const LoginForm = () => {
-    const INITIAL_STATE = {name: "", password: ""};
+    const INITIAL_STATE = { name: "", password: "" };
     const [fData, setFormData] = useState(INITIAL_STATE);
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
-    
+
     const handleChange = evt => {
         const { name, value } = evt.target;
         setFormData(fData => ({
@@ -35,25 +35,29 @@ const LoginForm = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label htmlFor="name">Username: </label>
-            <input
-                id="name"
-                type="text"
-                value={fData.name}
-                onChange={handleChange}
-                name="name"
-            />
-            <label htmlFor="password">Password: </label>
-            <input
-                id="password"
-                type="text"
-                value={fData.password}
-                onChange={handleChange}
-                name="password"
-            />
-            <button>Log In</button>
-        </form>
+        <>
+            <div className="content">
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="name">Username: </label>
+                    <input
+                        id="name"
+                        type="text"
+                        value={fData.name}
+                        onChange={handleChange}
+                        name="name"
+                    />
+                    <label htmlFor="password">Password: </label>
+                    <input
+                        id="password"
+                        type="text"
+                        value={fData.password}
+                        onChange={handleChange}
+                        name="password"
+                    />
+                    <button>Log In</button>
+                </form>
+            </div>
+        </>
     );
 };
 

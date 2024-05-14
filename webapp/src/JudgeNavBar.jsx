@@ -1,6 +1,7 @@
-import { Navbar, NavbarToggler, NavbarBrand, Collapse, Nav, NavItem, NavLink, InputGroup } from "reactstrap";
+import { Navbar, NavbarToggler, NavbarBrand, NavbarText, Collapse, Nav, NavItem, NavLink, InputGroup } from "reactstrap";
 import { useContext, useState } from "react";
 import UserContext from "./UserContext";
+import { Navigate } from "react-router-dom";
 
 const JudgeNavBar = () => {
     const { user, setUser } = useContext(UserContext);
@@ -11,7 +12,7 @@ const JudgeNavBar = () => {
     const logout = () => {
         setUser("player");
         localStorage.setItem("user", "player");
-        navigate("/");
+        Navigate("/");
     }
 
     return (
@@ -28,15 +29,15 @@ const JudgeNavBar = () => {
                         <InputGroup>
                             <NavItem>
                                 <NavLink href="/register">
-                                    <i className="tim-icons icon-badge" />  
-                                    New Judge
+                                    <i className="tim-icons icon-badge" />
+                                    Register
                                 </NavLink>
                             </NavItem>
                         </InputGroup>
                         <InputGroup onClick={logout}>
                             <NavItem style={{margin:"auto"}}>
                                 <i className="tim-icons icon-single-02" />  
-                                Log Out
+                                <NavbarText>Logout</NavbarText>
                             </NavItem>
                         </InputGroup>
                     </Nav>

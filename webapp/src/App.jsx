@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
  * @returns component
  */
 const App = () => {
-  const [user, setUser] = useState("player");
+  const [user, setUser] = useState(localStorage.user);
   
   console.log(user);
 

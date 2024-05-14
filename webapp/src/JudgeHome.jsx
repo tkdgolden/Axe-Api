@@ -12,20 +12,22 @@ const JudgeHome = () => {
 
     return (
         <>
-            <Container>
-                <Row xs="2">
-                    <Col>
-                        <JudgeSeasonOptions>
+            <div className="content">
+                <Container>
+                    <Row xs="2">
+                        <Col>
+                            <JudgeSeasonOptions>
 
-                        </JudgeSeasonOptions>
-                    </Col>
-                    <Col>
-                        <JudgeTournamentOptions>
-                        
-                        </JudgeTournamentOptions>
-                    </Col>
-                </Row>
-            </Container>
+                            </JudgeSeasonOptions>
+                        </Col>
+                        <Col>
+                            <JudgeTournamentOptions>
+
+                            </JudgeTournamentOptions>
+                        </Col>
+                    </Row>
+                </Container>
+            </div>
         </>
     );
 };
