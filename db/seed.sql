@@ -44,6 +44,7 @@ CREATE TABLE quarters (
 
 INSERT INTO quarters (month, season_id, start_date)
     VALUES (1, 1, '2024-01-20'),
+            (1, 2, '2025-01-20'),
             (2, 1, '2024-08-15');
 
 CREATE TABLE laps (
@@ -56,7 +57,8 @@ CREATE TABLE laps (
 
 INSERT INTO laps (quarter_id, counter, discipline, start_date)
     VALUES (1, 1, 'hatchet', '2024-01-20'),
-            (2, 1, 'knives', '2024-08-15');
+            (2, 1, 'hatchet', '2024-01-20'),
+            (3, 1, 'knives', '2024-08-15');
 
 CREATE TABLE tournaments (
     tournament_id SERIAL PRIMARY KEY,

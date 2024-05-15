@@ -1,10 +1,20 @@
 import { Table } from "reactstrap";
-import useGetSeason from "./hooks/useGetSeason";
+import { useEffect, useState } from "react";
+import AxeApi from "./Api";
 
 const SeasonStatsTable = (props) => {
+    const [ seasonStats, setSeasonStats ] = useState([]);
 
-    const seasonStats = useGetSeason(props.season_id);
+    useEffect(() => {
+        async function getSeasonStats() {
+            const seasonStatsResult = await AxeApi.getSeason(props.seasonId);
+            setSeasonStats(seasonStatsResult);
+        }
+        getSeasonStats();
+    }, [props.seasonId]);
+
     console.log(seasonStats);
+
 
     if (seasonStats.length !== 0) {
         return (
