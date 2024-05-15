@@ -6746,15 +6746,17 @@ a.close.disabled {
 }
 
 .modal-dialog {
-  position: relative;
-  width: auto;
-  margin: 0.5rem;
+  /* make fullscreen */
+  position: fixed;
+  top: 0;
+  width: 100vw !important;
+  margin: 0 !important;
   pointer-events: none;
 }
 
 .modal.fade .modal-dialog {
   transition: transform 0.3s ease-out;
-  transform: translate(0, -50px);
+  /* transform: translate(0, -50px); */
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -6764,7 +6766,7 @@ a.close.disabled {
 }
 
 .modal.show .modal-dialog {
-  transform: none;
+  transform: none !important;
 }
 
 .modal.modal-static .modal-dialog {
@@ -18104,8 +18106,6 @@ hr {
   min-height: 100vh;
   border-top: 2px solid #e14eca;
   background: linear-gradient(#1e1e2f, #1e1e24);
-  /* come below nav bar */
-  /* padding-top: 100px; */
   -webkit-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   -moz-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   -o-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);

@@ -362,6 +362,16 @@ def all_seasons():
         return jsonify(error = str(error)), 400
     
 
+@app.route("/tournaments/all")
+def all_tournaments():
+    try:
+        tournaments = get_all_tournaments()
+        return jsonify(tournaments)
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
 @app.route("/stats/season/<season_id>")
 def season_stats(season_id):
     print(season_id)

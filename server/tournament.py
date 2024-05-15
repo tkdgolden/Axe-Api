@@ -65,3 +65,14 @@ def update_tournament_current_round(tournament_id, round_id):
     except:
         conn.rollback()
         raise
+
+
+def get_all_tournaments():
+    try:
+        CUR.execute(""" SELECT tournament_id, tournament_name, tournament_date FROM tournaments ORDER BY tournament_date """)
+        all_tournaments = CUR.fetchall()
+        print(all_tournaments)
+    except:
+        conn.rollback()
+        raise
+    return all_tournaments

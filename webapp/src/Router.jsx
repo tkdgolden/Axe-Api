@@ -56,6 +56,7 @@ const Router = () => {
                             <Route path="/login" element={<LoginForm />}></Route>
                             <Route path="/season-stats" element={<SeasonStats />}></Route>
                             <Route path="/season-stats/:seasonId" element={<SeasonStats/>}></Route>
+                            <Route path="/tournament-stats/:tournamentId" element={<TournamentStats />}></Route>
                             <Route path="/tournament-stats" element={<TournamentStats />}></Route>
                             <Route path="/discipline-stats/:discipline" element={<DisciplineStats />}></Route>
                             <Route path="/discipline-stats" element={<DisciplineStats />}></Route>

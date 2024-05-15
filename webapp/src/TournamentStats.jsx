@@ -1,39 +1,65 @@
-import { DoubleEliminationBracket, Match, MATCH_STATES, SVGViewer } from '@g-loot/react-tournament-brackets';
-import dataDoublePlayoffs from './dataDoublePlayoffs';
-import useComponentSize from '@rehooks/component-size';
+import TournamentBracket from './TournamentBracket';
 import { useRef, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Table, UncontrolledDropdown, DropdownToggle, DropdownMenu, NavLink, DropdownItem, Card, CardHeader, CardTitle, CardBody, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import useGetAllTournaments from './hooks/useGetAllTournaments';
 
-/**
- * welcomes guest or user
- * @returns component
- */
+
 const TournamentStats = () => {
     const ref = useRef(null);
-    const size = useComponentSize(ref);
-    console.log(size);
-    const width = size.width;
-    const height = size.height;
-    const [fullScreen, setFullScreen] = useState(false);
-    console.log(fullScreen);
+    const tournaments = useGetAllTournaments();
+    const params = useParams();
+    const navigate = useNavigate();
+    let currentTournament;
+    const [modal, setModal] = useState(false);
+
+    const toggle = () => setModal(!modal);
+
+    const changeTournament = (tournamentId) => {
+        navigate(`/tournament-stats/${tournamentId}`);
+    };
+
+    { params.tournamentId ? currentTournament = `${tournaments[params.tournamentId - 1][1]} ${tournaments[params.tournamentId - 1][2]}` : currentTournament = "Choose a Tournament" }
 
     return (
         <>
             <div className='content' ref={ref}>
                 <h1>Tournament Stats View</h1>
-                <div>
-                    <button onClick={() => setFullScreen(!fullScreen)}>Toggle Full Screen</button>
-                    <div>
-                        <DoubleEliminationBracket
-                            matches={dataDoublePlayoffs}
-                            matchComponent={Match}
-                            svgWrapper={({ children, ...props }) => (
-                                <SVGViewer width={width - 300} height={height - 100} {...props}>
-                                    {children}
-                                </SVGViewer>
-                            )}
-                        />
-                    </div>
-                </div>
+                <UncontrolledDropdown>
+                    <DropdownToggle
+                        caret
+                        className="btn-icon"
+                        color="link"
+                        data-toggle="dropdown"
+                        type="button"
+                    >
+                        <i className="tim-icons icon-bullet-list-67" />
+                    </DropdownToggle>
+                    <DropdownMenu aria-labelledby="dropdownMenuLink">
+                        {tournaments.map(tournament =>
+                            <DropdownItem key={tournament[0]} onClick={() => changeTournament(tournament[0])}>
+                                {tournament[1]} {tournament[2]}
+                            </DropdownItem>
+                        )}
+                    </DropdownMenu>
+                </UncontrolledDropdown>
+                <Card>
+                    <CardHeader>
+                        <CardTitle tag="h4">{currentTournament}</CardTitle>
+                    </CardHeader>
+                    <TournamentBracket parentReference={ref} />
+                    <Button color="green" onClick={toggle}>
+                        Full Screen
+                    </Button>
+                </Card>
+                <Modal className="modal-fullscreen" isOpen={modal} toggle={toggle}>
+                        <TournamentBracket parentReference={ref} fullScreen={modal} />
+                    {/* <ModalFooter>
+                        <Button color="green" onClick={toggle}>
+                            Close Full Screen
+                        </Button>
+                    </ModalFooter> */}
+                </Modal>
             </div>
         </>
     );
