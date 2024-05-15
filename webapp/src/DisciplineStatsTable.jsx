@@ -2,21 +2,21 @@ import { Table, CardBody } from "reactstrap";
 import { useEffect, useState } from "react";
 import AxeApi from "./Api";
 
-const SeasonStatsTable = (props) => {
-    const [ seasonStats, setSeasonStats ] = useState([]);
+const DisciplineStatsTable = (props) => {
+    const [ disciplineStats, setDisciplineStats ] = useState([]);
 
     useEffect(() => {
-        async function getSeasonStats() {
-            const seasonStatsResult = await AxeApi.getSeason(props.seasonId);
-            setSeasonStats(seasonStatsResult);
+        async function getDisciplineStats() {
+            const disciplineStatsResult = await AxeApi.getDiscipline(props.discipline);
+            setDisciplineStats(disciplineStatsResult);
         }
-        getSeasonStats();
-    }, [props.seasonId]);
+        getDisciplineStats();
+    }, [props.discipline]);
 
-    console.log(seasonStats);
+    console.log(disciplineStats);
 
 
-    if (seasonStats.length !== 0) {
+    if (disciplineStats.length !== 0) {
         return (
             <>
                 <CardBody>
@@ -44,7 +44,7 @@ const SeasonStatsTable = (props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {seasonStats.map(player => {
+                            {disciplineStats.map(player => {
                                 return (
                                     <tr key={player[0]}>
                                         <th scope="row">
@@ -79,4 +79,4 @@ const SeasonStatsTable = (props) => {
     }
 };
 
-export default SeasonStatsTable
+export default DisciplineStatsTable

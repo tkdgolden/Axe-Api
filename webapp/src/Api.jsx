@@ -97,7 +97,18 @@ class AxeApi {
   static async getSeason(season_id) {
     try {
       console.log(season_id);
-      let res = await this.request(`/seasons/${season_id}`);
+      let res = await this.request(`/stats/season/${season_id}`);
+      return res;
+    }
+    catch (e) {
+      return false;
+    }
+  }
+
+  static async getDiscipline(discipline) {
+    try {
+      console.log(discipline);
+      let res = await this.request(`/stats/discipline/${discipline}`);
       return res;
     }
     catch (e) {

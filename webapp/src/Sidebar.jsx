@@ -39,13 +39,13 @@ function Sidebar() {
                     <li>
                         <NavLink href="/" className="nav-link">
                             <i className="tim-icons icon-trophy" />
-                            Overall Stats View
+                            Hatchet Overall Stats
                         </NavLink>
                     </li>
                     <li>
                         <NavLink href="/season-stats" className="nav-link">
                             <i className="tim-icons icon-chart-bar-32" />
-                            Season Stats View
+                            Stats by Season
                         </NavLink>
                     </li>
                     <li>
@@ -57,7 +57,7 @@ function Sidebar() {
                     <li>
                         <NavLink href="/discipline-stats" className="nav-link">
                             <i className="tim-icons icon-settings" />
-                            Discipline Stats View
+                            Other Disciplines
                         </NavLink>
                     </li>
                     <li>
