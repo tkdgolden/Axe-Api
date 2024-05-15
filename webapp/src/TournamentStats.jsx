@@ -1,79 +1,39 @@
-import UserContext from './UserContext';
-import React, { useContext } from 'react';
-import { Table } from 'reactstrap';
+import { DoubleEliminationBracket, Match, MATCH_STATES, SVGViewer } from '@g-loot/react-tournament-brackets';
+import dataDoublePlayoffs from './dataDoublePlayoffs';
+import useComponentSize from '@rehooks/component-size';
+import { useRef, useState } from 'react';
 
 /**
  * welcomes guest or user
  * @returns component
  */
 const TournamentStats = () => {
+    const ref = useRef(null);
+    const size = useComponentSize(ref);
+    console.log(size);
+    const width = size.width;
+    const height = size.height;
+    const [fullScreen, setFullScreen] = useState(false);
+    console.log(fullScreen);
 
     return (
         <>
-            <div className='content'>
+            <div className='content' ref={ref}>
                 <h1>Tournament Stats View</h1>
-                <Table dark>
-                    <thead>
-                        <tr>
-                            <th>
-                                #
-                            </th>
-                            <th>
-                                First Name
-                            </th>
-                            <th>
-                                Last Name
-                            </th>
-                            <th>
-                                Username
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">
-                                1
-                            </th>
-                            <td>
-                                Mark
-                            </td>
-                            <td>
-                                Otto
-                            </td>
-                            <td>
-                                @mdo
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                2
-                            </th>
-                            <td>
-                                Jacob
-                            </td>
-                            <td>
-                                Thornton
-                            </td>
-                            <td>
-                                @fat
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                3
-                            </th>
-                            <td>
-                                Larry
-                            </td>
-                            <td>
-                                the Bird
-                            </td>
-                            <td>
-                                @twitter
-                            </td>
-                        </tr>
-                    </tbody>
-                </Table>
+                <div>
+                    <button onClick={() => setFullScreen(!fullScreen)}>Toggle Full Screen</button>
+                    <div>
+                        <DoubleEliminationBracket
+                            matches={dataDoublePlayoffs}
+                            matchComponent={Match}
+                            svgWrapper={({ children, ...props }) => (
+                                <SVGViewer width={width - 300} height={height - 100} {...props}>
+                                    {children}
+                                </SVGViewer>
+                            )}
+                        />
+                    </div>
+                </div>
             </div>
         </>
     );
