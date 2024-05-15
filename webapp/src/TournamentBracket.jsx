@@ -2,6 +2,7 @@ import { DoubleEliminationBracket, Match, MATCH_STATES, SVGViewer } from '@g-loo
 import dataDoublePlayoffs from './dataDoublePlayoffs';
 import useComponentSize from '@rehooks/component-size';
 import { useWindowSize } from "@uidotdev/usehooks";
+import GlootTheme from './GlootTheme';
 
 
 const TournamentBracket = (props) => {
@@ -25,8 +26,24 @@ const TournamentBracket = (props) => {
             <DoubleEliminationBracket
                 matches={dataDoublePlayoffs}
                 matchComponent={Match}
+                theme={GlootTheme}
+                options={{
+                    style: {
+                      roundHeader: {
+                        backgroundColor: GlootTheme.roundHeaders.background,
+                        fontColor: GlootTheme.roundHeaders.fontColor,
+                      },
+                      connectorColor: GlootTheme.connectorColor,
+                      connectorColorHighlight: GlootTheme.connectorColorHighlight,
+                    },
+                  }}
                 svgWrapper={({ children, ...props }) => (
-                    <SVGViewer width={width} height={height} {...props}>
+                    <SVGViewer
+                        width={width}
+                        height={height} {...props}
+                        background={GlootTheme.svgBackground}
+                        SVGBackground={GlootTheme.svgBackground}
+                    >
                         {children}
                     </SVGViewer>
                 )}
