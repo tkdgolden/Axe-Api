@@ -3,6 +3,8 @@ import { useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Table, UncontrolledDropdown, DropdownToggle, DropdownMenu, NavLink, DropdownItem, Card, CardHeader, CardTitle, CardBody, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import useGetAllTournaments from './hooks/useGetAllTournaments';
+import { useWindowSize } from "@uidotdev/usehooks";
+
 
 
 const TournamentStats = () => {
@@ -12,6 +14,10 @@ const TournamentStats = () => {
     const navigate = useNavigate();
     let currentTournament;
     const [modal, setModal] = useState(false);
+    // const window = useWindowSize();
+    // const width = window.width;
+    // const height = window.height;
+    // console.log(width, height);
 
     const toggle = () => setModal(!modal);
 
@@ -52,13 +58,13 @@ const TournamentStats = () => {
                         Full Screen
                     </Button>
                 </Card>
-                <Modal className="modal-fullscreen" isOpen={modal} toggle={toggle}>
-                        <TournamentBracket parentReference={ref} fullScreen={modal} />
-                    {/* <ModalFooter>
-                        <Button color="green" onClick={toggle}>
-                            Close Full Screen
-                        </Button>
-                    </ModalFooter> */}
+                <Modal 
+                    className="modal-fullscreen"
+                    isOpen={modal}
+                    toggle={toggle}
+                >
+                    <ModalHeader toggle={toggle}>{currentTournament}</ModalHeader>
+                    <TournamentBracket parentReference={ref} fullScreen={modal} />
                 </Modal>
             </div>
         </>

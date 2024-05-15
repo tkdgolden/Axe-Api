@@ -1,7 +1,7 @@
 import { DoubleEliminationBracket, Match, MATCH_STATES, SVGViewer } from '@g-loot/react-tournament-brackets';
 import dataDoublePlayoffs from './dataDoublePlayoffs';
 import useComponentSize from '@rehooks/component-size';
-import { useWindowSize } from "@uidotdev/usehooks"
+import { useWindowSize } from "@uidotdev/usehooks";
 
 
 const TournamentBracket = (props) => {
@@ -17,7 +17,7 @@ const TournamentBracket = (props) => {
     }
     else {
         width = window.width;
-        height = window.height;
+        height = window.height - 40;
     }
 
     return (
