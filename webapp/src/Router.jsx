@@ -11,9 +11,7 @@ import OverallStats from "./OverallStats.jsx";
 import SeasonStats from "./SeasonStats";
 import TournamentStats from "./TournamentStats";
 import Sidebar from "./Sidebar.jsx";
-import DisciplineStats from "./DisciplineStats";
 import PlayerStats from "./PlayerStats.jsx";
-import { Container, Col, Row } from "reactstrap";
 
 /**
  * controls which route's are active based on whether the current user is logged in or not
@@ -52,14 +50,13 @@ const Router = () => {
                     <Sidebar />
                     <div className="main-panel">
                         <Routes>
+                            <Route path="/overall-stats/:discipline" element={<OverallStats />}></Route>
                             <Route path="/overall-stats" element={<OverallStats />}></Route>
                             <Route path="/login" element={<LoginForm />}></Route>
                             <Route path="/season-stats" element={<SeasonStats />}></Route>
                             <Route path="/season-stats/:seasonId" element={<SeasonStats/>}></Route>
                             <Route path="/tournament-stats/:tournamentId" element={<TournamentStats />}></Route>
                             <Route path="/tournament-stats" element={<TournamentStats />}></Route>
-                            <Route path="/discipline-stats/:discipline" element={<DisciplineStats />}></Route>
-                            <Route path="/discipline-stats" element={<DisciplineStats />}></Route>
                             <Route path="/player-stats" element={<PlayerStats />}></Route>
                             <Route path="*" element={<Navigate to="/overall-stats" />}></Route>
                         </Routes>

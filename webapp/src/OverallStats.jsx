@@ -1,54 +1,61 @@
 import UserContext from './UserContext';
-import React, { useContext } from 'react';
-import { Table } from 'reactstrap';
-import useGetOverallStats from './hooks/useGetOverallStats.jsx';
+import React, { useContext, useState } from 'react';
+import { Table, UncontrolledDropdown, DropdownToggle, DropdownMenu, NavLink, DropdownItem, Card, CardHeader, CardTitle, CardBody } from 'reactstrap';
+import DisciplineStatsTable from './DisciplineStatsTable';
+import { Navigate, useParams, useNavigate } from 'react-router-dom';
 
-/**
- * welcomes guest or user
- * @returns component
- */
 const OverallStats = () => {
+    const params = useParams();
+    const navigate = useNavigate();
+    let currentDiscipline;
 
-    const stats = useGetOverallStats();
+    const changeDiscipline = (discipline) => {
+        navigate(`/overall-stats/${discipline}`);
+    };
 
-    if (stats.length !== 0) {
+    {params.discipline ? currentDiscipline = `${params.discipline}` : currentDiscipline = "Hatchet"}
+
         return (
             <>
-                <div className="content">
+                <div className='content'>
                     <h1>Overall Stats View</h1>
-                    <Table hover>
-                        <thead>
-                            <tr>
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                    Average
-                                </th>
-                                <th>
-                                    Total Wins
-                                </th>
-                                <th>
-                                    Total Matches
-                                </th>
-                                <th>
-                                    High Score
-                                </th>
-                                <th>
-                                    Low Score
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {stats.map(row => <tr role="button" data={row[0]} key={row[0]}><th scope="row">{row[1]}</th><td>{row[2]}</td><td>{row[3]}</td><td>{row[4]}</td><td>{row[5]}</td><td>{row[6]}</td></tr>)}
-                        </tbody>
-                    </Table>
+                    <div>
+                        <UncontrolledDropdown>
+                            <DropdownToggle
+                                caret
+                                className="btn-link"
+                                color="link"
+                                data-toggle="dropdown"
+                                type="button"
+                            >
+                                <i className="tim-icons icon-bullet-list-67" />
+                                Choose a Discipline
+                            </DropdownToggle>
+                            <DropdownMenu aria-labelledby="dropdownMenuLink">
+                                <DropdownItem onClick={() => changeDiscipline('hatchet')}>
+                                    Hatchet
+                                </DropdownItem>
+                                <DropdownItem onClick={() => changeDiscipline('knives')}>
+                                    Knives
+                                </DropdownItem>
+                                <DropdownItem onClick={() => changeDiscipline('big axe')}>
+                                    Big Axe
+                                </DropdownItem>
+                                <DropdownItem onClick={() => changeDiscipline('duals')}>
+                                    Duals
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
+                    </div>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle tag="h4">{currentDiscipline}</CardTitle>
+                        </CardHeader>
+                        <DisciplineStatsTable discipline={currentDiscipline}/>
+                    </Card>
                 </div>
             </>
         );
-    }
-
-
 };
 
 export default OverallStats
