@@ -372,6 +372,17 @@ def all_tournaments():
         return jsonify(error = str(error)), 400
     
 
+@app.route("/competitors/<competitor_name>")
+def all_competitors(competitor_name):
+    try:
+        search_name = "%" + competitor_name + "%"
+        competitors = get_competitors(search_name)
+        return jsonify(competitors)
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
 @app.route("/stats/season/<season_id>")
 def season_stats(season_id):
     print(season_id)

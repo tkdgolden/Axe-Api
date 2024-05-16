@@ -104,6 +104,16 @@ class AxeApi {
     }
   }
 
+  static async searchPlayers(playerName) {
+    try {
+      let res = await this.request(`competitors/${playerName}`)
+      return res;
+    }
+    catch (e) {
+      return false;
+    }
+  }
+
   static async getSeason(season_id) {
     try {
       let res = await this.request(`stats/season/${season_id}`);

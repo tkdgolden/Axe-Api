@@ -51,3 +51,14 @@ def edit_competitor(competitor_id, first_name, last_name):
     except:
         conn.rollback()
         raise
+
+
+def get_competitors(competitor_name):
+    try:
+        CUR.execute(""" SELECT competitor_id, competitor_first_name, competitor_last_name FROM competitors WHERE ( competitor_first_name ILIKE %(competitor_name)s ) OR ( competitor_last_name ILIKE %(competitor_name)s ) """, {'competitor_name': competitor_name})
+        competitors = CUR.fetchall()
+        print(competitors)
+    except:
+        conn.rollback()
+        raise
+    return competitors

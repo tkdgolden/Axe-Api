@@ -14,10 +14,6 @@ const TournamentStats = () => {
     const navigate = useNavigate();
     let currentTournament;
     const [modal, setModal] = useState(false);
-    // const window = useWindowSize();
-    // const width = window.width;
-    // const height = window.height;
-    // console.log(width, height);
 
     const toggle = () => setModal(!modal);
 
