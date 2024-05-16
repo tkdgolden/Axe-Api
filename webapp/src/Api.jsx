@@ -76,7 +76,7 @@ class AxeApi {
 
   static async overallStats() {
     try {
-      let res = await this.request('/scores/all');
+      let res = await this.request('scores/all');
       return res;
     }
     catch (e) {
@@ -86,7 +86,7 @@ class AxeApi {
 
   static async allSeasons() {
     try {
-      let res = await this.request('/seasons/all');
+      let res = await this.request('seasons/all');
       return res;
     }
     catch (e) {
@@ -96,7 +96,7 @@ class AxeApi {
 
   static async allTournaments() {
     try {
-      let res = await this.request('/tournaments/all');
+      let res = await this.request('tournaments/all');
       return res;
     }
     catch (e) {
@@ -106,8 +106,7 @@ class AxeApi {
 
   static async getSeason(season_id) {
     try {
-      console.log(season_id);
-      let res = await this.request(`/stats/season/${season_id}`);
+      let res = await this.request(`stats/season/${season_id}`);
       return res;
     }
     catch (e) {
@@ -117,8 +116,17 @@ class AxeApi {
 
   static async getDiscipline(discipline) {
     try {
-      console.log(discipline);
-      let res = await this.request(`/stats/discipline/${discipline}`);
+      let res = await this.request(`stats/discipline/${discipline}`);
+      return res;
+    }
+    catch (e) {
+      return false;
+    }
+  }
+
+  static async getPlayer(playerId) {
+    try {
+      let res = await this.request(`stats/competitor/${playerId}`);
       return res;
     }
     catch (e) {

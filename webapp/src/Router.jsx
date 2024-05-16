@@ -57,7 +57,7 @@ const Router = () => {
                             <Route path="/season-stats/:seasonId" element={<SeasonStats/>}></Route>
                             <Route path="/tournament-stats/:tournamentId" element={<TournamentStats />}></Route>
                             <Route path="/tournament-stats" element={<TournamentStats />}></Route>
-                            <Route path="/player-stats" element={<PlayerStats />}></Route>
+                            <Route path="/player-stats/:playerId" element={<PlayerStats />}></Route>
                             <Route path="*" element={<Navigate to="/overall-stats" />}></Route>
                         </Routes>
                     </div>

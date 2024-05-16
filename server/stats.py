@@ -37,3 +37,14 @@ def get_discipline_stats(discipline):
         conn.rollback()
         raise
     return discipline_stats
+
+
+def get_competitor_stats(competitor_id):
+    try:
+        CUR.execute(""" SELECT competitor_id, competitor_first_name, competitor_last_name, ROUND(AVG(total), 2), COUNT(win), COUNT(score_id), MAX(total), MIN(total) FROM scores JOIN matches ON scores.match_id = matches.match_id JOIN competitors USING (competitor_id) WHERE competitors.competitor_id = %(competitor_id)s GROUP BY competitor_id, competitor_first_name, competitor_last_name, discipline """, {'competitor_id': competitor_id})
+        competitor_stats = CUR.fetchall()
+        print(competitor_stats)
+    except:
+        conn.rollback()
+        raise
+    return competitor_stats

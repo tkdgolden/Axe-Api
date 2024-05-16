@@ -1,8 +1,6 @@
-import UserContext from './UserContext';
-import React, { useContext, useState } from 'react';
-import { Table, UncontrolledDropdown, DropdownToggle, DropdownMenu, NavLink, DropdownItem, Card, CardHeader, CardTitle, CardBody } from 'reactstrap';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Card, CardHeader, CardTitle } from 'reactstrap';
 import DisciplineStatsTable from './DisciplineStatsTable';
-import { Navigate, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const OverallStats = () => {
     const params = useParams();

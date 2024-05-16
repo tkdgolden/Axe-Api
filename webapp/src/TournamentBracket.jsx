@@ -8,7 +8,6 @@ import GlootTheme from './GlootTheme';
 const TournamentBracket = (props) => {
     const size = useComponentSize(props.parentReference);
     const window = useWindowSize();
-    console.log(size);
     let width;
     let height;
     const fullScreen = props.fullScreen;

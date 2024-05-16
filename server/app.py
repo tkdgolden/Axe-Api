@@ -392,3 +392,14 @@ def discipline_stats(discipline):
     except Exception as error:
         print(error)
         return jsonify(error = str(error)), 400
+    
+
+@app.route("/stats/competitor/<competitor_id>")
+def competitor_stats(competitor_id):
+    print(competitor_id)
+    try:
+        stats = get_competitor_stats(competitor_id)
+        return jsonify(stats)
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
