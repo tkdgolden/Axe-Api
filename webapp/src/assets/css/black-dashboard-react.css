@@ -16096,6 +16096,7 @@ img {
 .navbar.navbar-absolute {
   position: absolute;
   z-index: 1050;
+  max-height: 60px;
 }
 
 .navbar.navbar-transparent {
