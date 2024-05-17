@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Flask, jsonify, request, session, json
+from flask import Flask, jsonify, request, session, json, make_response
 import jwt
 from db import *
 from auth import login_required, SECRET_KEY
@@ -226,6 +226,16 @@ def tournaments():
         return jsonify(error = str(error)), 400
     
 
+@app.route('/tournaments/<tournament_id>/begin')
+def begin_tournament(tournament_id):
+    try:
+        bracket_object = begin_new_tournament(tournament_id)
+        return jsonify(bracket_object)
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
 @app.route('/rounds', methods=["POST"])
 @login_required
 def rounds():
@@ -410,6 +420,17 @@ def competitor_stats(competitor_id):
     print(competitor_id)
     try:
         stats = get_competitor_stats(competitor_id)
+        return jsonify(stats)
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
+@app.route("/stats/tournaments/<tournament_id>")
+def tournament_stats(tournament_id):
+    print(tournament_id)
+    try:
+        stats = begin_new_tournament(tournament_id)
         return jsonify(stats)
     except Exception as error:
         print(error)

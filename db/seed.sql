@@ -23,7 +23,8 @@ CREATE TABLE competitors (
 INSERT INTO competitors (competitor_first_name, competitor_last_name)
     VALUES ('ann', 'applewood'),
             ('bob', 'berrymore'),
-            ('carrie', 'castleman');
+            ('carrie', 'castleman'),
+            ('danny', 'dapper');
 
 CREATE TABLE seasons (
     season_id SERIAL PRIMARY KEY,
@@ -95,6 +96,12 @@ CREATE TABLE enrollment (
 INSERT INTO enrollment (season_id, competitor_id)
     VALUES (1, 1),
             (2, 2);
+
+INSERT INTO enrollment (tournament_id, competitor_id)
+    VALUES (1, 3),
+            (1, 2),
+            (1, 1),
+            (1, 4);
 
 CREATE TABLE matches (
     match_id SERIAL PRIMARY KEY,
