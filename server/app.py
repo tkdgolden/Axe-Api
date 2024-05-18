@@ -430,7 +430,7 @@ def competitor_stats(competitor_id):
 def tournament_stats(tournament_id):
     print(tournament_id)
     try:
-        stats = begin_new_tournament(tournament_id)
+        stats = get_tournament_stats(tournament_id)
         return jsonify(stats)
     except Exception as error:
         print(error)

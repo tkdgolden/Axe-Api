@@ -84,8 +84,8 @@ CREATE TABLE rounds (
 );
 
 INSERT INTO rounds (bye_competitors, matches, tournament_id, which_round)
-    VALUES ('{0, 0, 0, 0}', '{100, 101, 102, 103}', 1, 'C'),
-            ('{0}', '{104}', 1, 'A');
+    VALUES ('{0, 0, 0, 0}', '{1, 2}', 1, 'E'),
+            ('{0}', '{104}', 1, 'B');
 
 CREATE TABLE enrollment (
     tournament_id INTEGER REFERENCES tournaments,
