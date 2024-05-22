@@ -104,6 +104,16 @@ class AxeApi {
     }
   }
 
+  static async allPlayers() {
+    try {
+      let res = await this.request('competitors/all');
+      return res;
+    }
+    catch (e) {
+      return false;
+    }
+  }
+
   static async searchPlayers(playerName) {
     try {
       let res = await this.request(`competitors/${playerName}`)
@@ -143,6 +153,86 @@ class AxeApi {
       return false;
     }
   }
+
+  static async createSeason(data) {
+    try {
+      let res = await this.request('seasons', data, "post");
+      return true;
+    }
+    catch {
+      return false;
+    }
+  }
+
+  static async createTournament(data) {
+    try {
+      let res = await this.request('tournaments', data, "post");
+      return true;
+    }
+    catch {
+      return false;
+    }
+  }
+
+  static async seasonInfo(seasonId) {
+    try {
+      let res = await this.request(`seasons/${seasonId}`);
+      return res;
+    }
+    catch {
+      return false;
+    }
+  }
+
+  static async createPlayer(playerData) {
+    try {
+      let id = await this.request('competitors', playerData, "post");
+      return id;
+    }
+    catch {
+      return false;
+    }
+  }
+
+  static async enrollPlayer(playerId, seasonId=null, tournamentId=null) {
+    const data = {
+      competitor_id: playerId,
+      season_id: seasonId,
+      tournament_id: tournamentId
+    }
+    try {
+      let res = await this.request('enrollment', data, "post");
+      return res;
+    }
+    catch {
+      return false;
+    }
+  }
+
+  static async lapMatches(lapId) {
+    try {
+      let res = await this.request(`laps/${lapId}`);
+      return res;
+    }
+    catch {
+      return false;
+    }
+  }
+
+  static async newLap(seasonId) {
+    const data = {
+      season_id: seasonId,
+      discipline: 'hatchet'
+    }
+    try {
+      let res = await this.request('laps', data, 'post');
+      return res;
+    }
+    catch {
+      return false;
+    }
+  }
+
 
 }
 

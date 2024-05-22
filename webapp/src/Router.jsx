@@ -12,6 +12,10 @@ import SeasonStats from "./SeasonStats";
 import TournamentStats from "./TournamentStats";
 import Sidebar from "./Sidebar.jsx";
 import PlayerStats from "./PlayerStats.jsx";
+import NewSeasonForm from "./NewSeasonForm.jsx";
+import NewTournamentForm from "./NewTournamentForm.jsx";
+import ScoreSeason from "./ScoreSeason.jsx";
+import ScoreTournament from "./ScoreTournament.jsx";
 
 /**
  * controls which route's are active based on whether the current user is logged in or not
@@ -31,6 +35,10 @@ const Router = () => {
                             <Routes>
                                 <Route path="/" element={<JudgeHome />}></Route>
                                 <Route path="/register" element={<RegisterForm />}></Route>
+                                <Route path="/new-season" element={<NewSeasonForm />}></Route>
+                                <Route path="/new-tournament" element={<NewTournamentForm />}></Route>
+                                <Route path="/season/:seasonId" element={<ScoreSeason />}></Route>
+                                <Route path="/tournament/:tournamentId" element={<ScoreTournament />}></Route>
                                 <Route path="*" element={<Navigate to="/" />}></Route>
                             </Routes>
                         </div>

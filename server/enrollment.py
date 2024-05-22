@@ -4,6 +4,10 @@ CUR, conn = db_connect()
 
 def no_duplicate_enrollment(competitor_id, tournament_id = None, season_id = None):
     """ checks if a enrollment already exists for that competitor and season or tournament """
+    CUR.execute(""" SELECT * FROM enrollment """)
+    print(CUR.fetchall())
+    CUR.execute(""" SELECT * FROM competitors """)
+    print(CUR.fetchall())
 
     if season_id:
         try:
@@ -33,12 +37,12 @@ def no_duplicate_enrollment(competitor_id, tournament_id = None, season_id = Non
         return True
 
 
-def add_enrollment(competitor_id, tournament_id = None, season_id = None):
+def add_enrollment(competitor_id, season_id = None, tournament_id = None):
     """ enrolls a competitor in a season or tournament """
 
     if not no_duplicate_enrollment(competitor_id, tournament_id, season_id):
         raise ValueError("This competitor is already enrolled.")
-
+    print("getting season and tournament mixed?", season_id, tournament_id)
     if season_id:
         try:
             CUR.execute(""" INSERT INTO enrollment (season_id, competitor_id) VALUES (%(season_id)s, %(competitor_id)s) """, 

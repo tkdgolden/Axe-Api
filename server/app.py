@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from flask import Flask, jsonify, request, session, json, make_response
 import jwt
 from db import *
@@ -6,7 +6,6 @@ from auth import login_required, SECRET_KEY
 from judge import *
 from competitor import *
 from season import *
-from quarter import *
 from lap import *
 from enrollment import *
 from tournament import *
@@ -84,8 +83,8 @@ def competitor():
         """ create a new competitor """
         
         try:
-            add_competitor(first_name, last_name)
-            return jsonify(success=True), 201
+            new_competitor = add_competitor(first_name, last_name)
+            return jsonify(new_competitor), 201
         except Exception as error:
             print(error)
             return jsonify(error = str(error)), 400
@@ -129,23 +128,12 @@ def season():
         return jsonify(error = str(error)), 400
     
 
-@app.route('/quarters', methods=["POST"])
-@login_required
-def quarter():
-    """ create a new quarter """
-
+@app.route("/seasons/<season_id>")
+def season_info(season_id):
+    print("season info", season_id)
     try:
-        month = request.json["month"]
-        season_id = request.json["season_id"]
-        start_date = datetime.strptime(request.json["start_date"], '%Y-%m-%d')
-    except:
-        error = "A new quarter requires a month, season id, and start date."
-        print(error)
-        return jsonify(error), 400
-    
-    try:
-        add_quarter(month, season_id, start_date)
-        return jsonify(success=True), 201
+        [season, laps, competitors] = get_season_info(season_id)
+        return jsonify([season, laps, competitors])
     except Exception as error:
         print(error)
         return jsonify(error = str(error)), 400
@@ -155,20 +143,29 @@ def quarter():
 @login_required
 def lap():
     """ create a new lap """
-
+    print("here")
     try:
-        counter = request.json["lap"]
-        quarter_id = request.json["quarter_id"]
+        season_id = request.json["season_id"]
         discipline = request.json["discipline"]
-        start_date = datetime.strptime(request.json["start_date"], '%Y-%m-%d')
+        start_date = date.today()
     except:
-        error = "A new lap requires a lap, quarter id, discipline, and start date."
+        error = "A new lap requires a season id and discipline."
         print(error)
         return jsonify(error), 400
     
     try:
-        add_lap(quarter_id, counter, discipline, start_date)
-        return jsonify(success=True), 201
+        new_lap_id = add_lap(season_id, discipline, start_date)
+        return jsonify(new_lap_id), 201
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
+@app.route('/laps/<lap_id>')
+def lap_matches(lap_id):
+    try:
+        matches = get_lap_matches(int(lap_id))
+        return jsonify(matches)
     except Exception as error:
         print(error)
         return jsonify(error = str(error)), 400
@@ -181,16 +178,11 @@ def enrollment():
 
     try:
         competitor_id = request.json["competitor_id"]
-        if ("season_id" in request.json and "tournament_id" in request.json):
-            raise
-        elif ("season_id" in request.json):
-            season_id = request.json["season_id"]
-            tournament_id = None
-        elif ("tournament_id" in request.json):
-            tournament_id = request.json["tournament_id"]
-            season_id = None
-        else:
-            raise
+        season_id = request.json["season_id"] or None
+        tournament_id = request.json["tournament_id"] or None
+        print(competitor_id)
+        print(season_id)
+        print(tournament_id)
     except:
         error = "Enrollment requires a competitor id and either a season id or a tournament id."
         print(error)
@@ -382,8 +374,18 @@ def all_tournaments():
         return jsonify(error = str(error)), 400
     
 
+@app.route("/competitors/all")
+def all_competitors():
+    try:
+        competitors = get_all_competitors()
+        return jsonify(competitors)
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
 @app.route("/competitors/<competitor_name>")
-def all_competitors(competitor_name):
+def find_competitor(competitor_name):
     try:
         search_name = "%" + competitor_name + "%"
         competitors = get_competitors(search_name)

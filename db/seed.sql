@@ -36,30 +36,17 @@ INSERT INTO seasons (season, start_date)
     VALUES ('I', '2024-01-20'),
             ('II', '2024-08-15');
 
-CREATE TABLE quarters (
-    quarter_id SERIAL PRIMARY KEY,
-    season_id INTEGER NOT NULL REFERENCES seasons,
-    month INTEGER NOT NULL,
-    start_date DATE NOT NULL
-);
-
-INSERT INTO quarters (month, season_id, start_date)
-    VALUES (1, 1, '2024-01-20'),
-            (1, 2, '2025-01-20'),
-            (2, 1, '2024-08-15');
-
 CREATE TABLE laps (
     lap_id SERIAL PRIMARY KEY,
-    quarter_id INTEGER NOT NULL REFERENCES quarters,
-    counter INTEGER NOT NULL,
+    season_id INTEGER NOT NULL REFERENCES seasons,
     discipline TEXT NOT NULL,
     start_date DATE NOT NULL
 );
 
-INSERT INTO laps (quarter_id, counter, discipline, start_date)
-    VALUES (1, 1, 'hatchet', '2024-01-20'),
-            (2, 1, 'hatchet', '2024-01-20'),
-            (3, 1, 'knives', '2024-08-15');
+INSERT INTO laps (season_id, discipline, start_date)
+    VALUES (1, 'hatchet', '2024-01-20'),
+            (2, 'hatchet', '2024-01-20'),
+            (1, 'knives', '2024-08-15');
 
 CREATE TABLE tournaments (
     tournament_id SERIAL PRIMARY KEY,
@@ -95,7 +82,10 @@ CREATE TABLE enrollment (
 
 INSERT INTO enrollment (season_id, competitor_id)
     VALUES (1, 1),
-            (2, 2);
+            (2, 2),
+            (1, 3),
+            (1, 4),
+            (1, 2);
 
 INSERT INTO enrollment (tournament_id, competitor_id)
     VALUES (1, 3),

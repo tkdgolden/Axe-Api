@@ -43,10 +43,27 @@ def add_season(season, start_date):
 
 def get_all_seasons():
     try:
-        CUR.execute(""" SELECT season_id, season, start_date FROM seasons ORDER BY start_date """)
+        CUR.execute(""" SELECT season_id, season, start_date FROM seasons ORDER BY start_date DESC """)
         all_seasons = CUR.fetchall()
         print(all_seasons)
     except:
         conn.rollback()
         raise
     return all_seasons
+
+def get_season_info(season_id):
+    try:
+        CUR.execute(""" SELECT season, start_date FROM seasons WHERE season_id = %(season_id)s """, {'season_id': season_id})
+        season = CUR.fetchone()
+        CUR.execute(""" SELECT lap_id, discipline, start_date FROM laps WHERE season_id = %(season_id)s """, {'season_id': season_id})
+        laps = CUR.fetchall()
+        CUR.execute(""" SELECT competitors.competitor_id, competitor_first_name, competitor_last_name FROM enrollment JOIN competitors ON competitors.competitor_id = enrollment.competitor_id WHERE season_id = %(season_id)s """, {'season_id': season_id})
+        competitors = CUR.fetchall()
+        print("competitors", competitors)
+        print(laps)
+        print(season)
+        print(competitors)
+    except:
+        conn.rollback()
+        raise
+    return [season, laps, competitors]

@@ -79,7 +79,7 @@ def update_tournament_current_round(tournament_id, round_id):
 
 def get_all_tournaments():
     try:
-        CUR.execute(""" SELECT tournament_id, tournament_name, tournament_date FROM tournaments ORDER BY tournament_date """)
+        CUR.execute(""" SELECT tournament_id, tournament_name, tournament_date FROM tournaments ORDER BY tournament_date DESC """)
         all_tournaments = CUR.fetchall()
         print(all_tournaments)
     except:

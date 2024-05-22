@@ -27,12 +27,14 @@ def add_competitor(first_name, last_name):
         raise
 
     try:
-        CUR.execute(""" INSERT INTO competitors (competitor_first_name, competitor_last_name) VALUES (%(first_name)s, %(last_name)s) """, {'first_name': first_name, 'last_name': last_name})
+        CUR.execute(""" INSERT INTO competitors (competitor_first_name, competitor_last_name) VALUES (%(first_name)s, %(last_name)s) RETURNING competitor_id """, {'first_name': first_name, 'last_name': last_name})
         conn.commit()
+        competitor_id = CUR.fetchone()
     
     except:
         conn.rollback()
         raise
+    return competitor_id
 
 
 def edit_competitor(competitor_id, first_name, last_name):
@@ -53,11 +55,20 @@ def edit_competitor(competitor_id, first_name, last_name):
         raise
 
 
+def get_all_competitors():
+    try:
+        CUR.execute(""" SELECT competitor_id, competitor_first_name, competitor_last_name FROM competitors """)
+        competitors = CUR.fetchall()
+    except:
+        conn.rollback()
+        raise
+    return competitors
+
+
 def get_competitors(competitor_name):
     try:
         CUR.execute(""" SELECT competitor_id, competitor_first_name, competitor_last_name FROM competitors WHERE ( competitor_first_name ILIKE %(competitor_name)s ) OR ( competitor_last_name ILIKE %(competitor_name)s ) """, {'competitor_name': competitor_name})
         competitors = CUR.fetchall()
-        print(competitors)
     except:
         conn.rollback()
         raise

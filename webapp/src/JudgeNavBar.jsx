@@ -11,6 +11,7 @@ const JudgeNavBar = () => {
 
     const logout = () => {
         setUser("player");
+        localStorage.clear();
         localStorage.setItem("user", "player");
         Navigate("/");
     }

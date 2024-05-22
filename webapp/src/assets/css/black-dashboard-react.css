@@ -236,6 +236,14 @@ table {
   border-collapse: collapse;
 }
 
+table .completed {
+  background-color: var(--success);
+}
+
+table .waiting {
+  background-color: var(--info);
+}
+
 caption {
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -18129,6 +18137,11 @@ hr {
 .main-panel>.content {
   padding: 78px 30px 30px 280px;
   /* change min to max */
+  max-height: calc(100vh - 90px);
+}
+
+.main-panel>.judge {
+  padding:78px 30px 30px 30px !important;
   max-height: calc(100vh - 90px);
 }
 
