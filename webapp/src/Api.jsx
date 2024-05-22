@@ -234,6 +234,33 @@ class AxeApi {
   }
 
 
+  static async newMatch(p1Id, p2Id, lapId) {
+    const data = {
+      player_1_id: p1Id,
+      player_2_id: p2Id,
+      lap_id: lapId
+    }
+    try {
+      let res = await this.request('matches', data, 'post');
+      return res;
+    }
+    catch {
+      return false;
+    }
+  }
+
+
+  static async getMatch(matchId) {
+    try {
+      let res = await this.request(`matches/${matchId}`);
+      return res;
+    }
+    catch {
+      return false;
+    }
+  }
+
+
 }
 
 export default AxeApi;

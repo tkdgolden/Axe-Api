@@ -2,18 +2,16 @@ import React, { useState, useEffect } from "react";
 import AxeApi from "../Api.jsx";
 
 
-const useGetLapMatches = (lap) => {
+const useGetMatch = (matchId) => {
     const [data, setData] = useState([]);
-
-    async function getLapMatches() {
-        const dataResult = await AxeApi.lapMatches(lap);
+    
+    async function getMatch() {
+        const dataResult = await AxeApi.getMatch(matchId);
         setData(dataResult);
     }
 
     useEffect(function fetchData() {
-        if (lap) {
-            getLapMatches();
-        }
+        getMatch();
     }, []);
 
     return data;
@@ -21,4 +19,4 @@ const useGetLapMatches = (lap) => {
 
 
 
-export default useGetLapMatches;
+export default useGetMatch;

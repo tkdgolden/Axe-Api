@@ -277,10 +277,10 @@ def add_matches():
     
     try:
         if (lap_id):
-            add_unscored_season_match(player_1_id, player_2_id, lap_id)
+            match_id = add_unscored_season_match(player_1_id, player_2_id, lap_id)
         elif (tournament_id):
-            add_unscored_tournament_match(player_1_id, player_2_id, tournament_id)
-        return jsonify(success=True), 201
+            match_id = add_unscored_tournament_match(player_1_id, player_2_id, tournament_id)
+        return jsonify(match_id), 201
     except Exception as error:
         print(error)
         return jsonify(error = str(error)), 400
@@ -306,6 +306,16 @@ def finish_matches(match_id):
     try:
         update_completed_match(match_id, winner_id, discipline, judge_id, dt, player_1_total, player_2_total)
         return jsonify(success=True), 201
+    except Exception as error:
+        print(error)
+        return jsonify(error = str(error)), 400
+    
+
+@app.route('/matches/<match_id>', methods=["GET"])
+def get_matches(match_id):
+    try:
+        match_info = get_match(match_id)
+        return jsonify(match_info)
     except Exception as error:
         print(error)
         return jsonify(error = str(error)), 400

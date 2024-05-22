@@ -22,15 +22,16 @@ def add_unscored_season_match(player_1_id, player_2_id, lap_id):
     """ adds an empty season match to given lap """
 
     try:
-        CUR.execute(""" INSERT INTO matches (player_1_id, player_2_id, lap_id) VALUES (%(player_1_id)s, %(player_2_id)s, %(lap_id)s) """,
+        CUR.execute(""" INSERT INTO matches (player_1_id, player_2_id, lap_id) VALUES (%(player_1_id)s, %(player_2_id)s, %(lap_id)s) RETURNING match_id """,
                     {'player_1_id': player_1_id,
                      'player_2_id': player_2_id,
                      'lap_id': lap_id})
         conn.commit()
-
+        match_id = CUR.fetchone()
     except:
         conn.rollback()
         raise
+    return match_id
 
 
 def update_completed_match(match_id, winner_id, discipline, judge_id, dt, player_1_total, player_2_total):
@@ -50,3 +51,13 @@ def update_completed_match(match_id, winner_id, discipline, judge_id, dt, player
     except:
         conn.rollback()
         raise
+
+
+def get_match(match_id):
+    try:
+        CUR.execute(""" SELECT p1.competitor_first_name || ' ' || p1.competitor_last_name as player1, p2.competitor_first_name || ' ' || p2.competitor_last_name as player2 FROM matches JOIN competitors p1 ON p1.competitor_id = matches.player_1_id JOIN competitors p2 ON p2.competitor_id = matches.player_2_id WHERE match_id = %(match_id)s """, {'match_id': match_id})
+        match_info = CUR.fetchone()
+    except:
+        conn.rollback()
+        raise
+    return match_info
