@@ -11,7 +11,7 @@ const ScoreMatch = () => {
     return (
         <>
             <div className="content judge">
-                <ScoreMatchTable matchInfo={matchInfo} />
+                <ScoreMatchTable matchInfo={matchInfo} matchId={matchId} />
             </div>
         </>
     )

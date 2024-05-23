@@ -261,6 +261,19 @@ class AxeApi {
   }
 
 
+  static async submitMatch(data) {
+    try {
+      let matchRes = await this.request(`matches/${data.p1.match_id}`, data.match, "patch");
+      let p1Res = await this.request('scores', data.p1, "post");
+      let p2Res = await this.request('scores', data.p2, "post");
+      return [matchRes, p1Res, p2Res];
+    }
+    catch {
+      return false;
+    }
+  }
+
+
 }
 
 export default AxeApi;

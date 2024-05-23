@@ -2,8 +2,11 @@ import { Container, Row, Col, Table, Button } from 'reactstrap';
 import { useEffect, useState } from 'react';
 import useGenerateRandom from './hooks/useGenerateRandom';
 import ThrowScore from './ThrowScore';
+import AxeApi from './Api';
+import { useNavigate } from 'react-router-dom';
 
 const ScoreMatchTable = (props) => {
+    const navigate = useNavigate();
     const [p1Total, setP1Total] = useState(null);
     const [p2Total, setP2Total] = useState(null);
     const [p1t1, setP1t1] = useState(null);
@@ -85,6 +88,65 @@ const ScoreMatchTable = (props) => {
         }
     }, [p1t8, p2t8]);
 
+    const handleSubmit = async (evt) => {
+        evt.preventDefault();
+        let winner = null;
+        /* FURTHER STUDY handle ties */
+        if (p1Total > p2Total) {
+            winner = props.matchInfo[0];
+        }
+        else if (p2Total > p2Total) {
+            winner = props.matchInfo[1];
+        }
+        const data = {
+            p1: {
+                competitor_id: props.matchInfo[0],
+                match_id: props.matchId,
+                /* FURTHER STUDY save quickpoints */
+                quick_points: 0,
+                sequence: sequence,
+                throw1: p1t1,
+                throw2: p1t2,
+                throw3: p1t3,
+                throw4: p1t4,
+                throw5: p1t5,
+                throw6: p1t6,
+                throw7: p1t7,
+                throw8: p1t8,
+                total: p1Total,
+                /* FURTHER STUDY handle ties */
+                win: p1Total > p2Total
+            },
+            p2: {
+                competitor_id: props.matchInfo[1],
+                match_id: props.matchId,
+                /* FURTHER STUDY save quickpoints */
+                quick_points: 0,
+                sequence: sequence,
+                throw1: p2t1,
+                throw2: p2t2,
+                throw3: p2t3,
+                throw4: p2t4,
+                throw5: p2t5,
+                throw6: p2t6,
+                throw7: p2t7,
+                throw8: p2t8,
+                total: p2Total,
+                /* FURTHER STUDY handle ties */
+                win: p2Total > p1Total
+            },
+            match: {
+                winner_id: winner,
+                judge_id: localStorage.user,
+                player_1_total: p1Total,
+                player_2_total: p2Total
+            }
+        }
+        const res = await AxeApi.submitMatch(data);
+        console.log(res);
+        navigate(-1);
+    }
+
     if (props.matchInfo) {
         return (
             <>
@@ -128,7 +190,7 @@ const ScoreMatchTable = (props) => {
                         <Col hidden xs="10"><ThrowScore p1={p1t8} p2={p2t8} setP1={setP1t8} setP2={setP2t8} /></Col>
                     </Row>
                     <Row>
-                        <Button hidden id="submit">
+                        <Button hidden id="submit" onClick={(evt) => handleSubmit(evt)}>
                             Submit Match
                         </Button>
                     </Row>

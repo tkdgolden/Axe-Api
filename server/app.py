@@ -293,18 +293,17 @@ def finish_matches(match_id):
     
     try:
         winner_id = request.json["winner_id"]
-        discipline = request.json["discipline"]
         judge_id = request.json["judge_id"]
-        dt = request.json["dt"]
+        dt = date.today()
         player_2_total = request.json["player_2_total"]
         player_1_total = request.json["player_1_total"]
     except:
-        error = "A completed match requires a match id, winner id, discipline, judge id, date/time, and totals for both players."
+        error = "A completed match requires a match id, winner id, judge id, date/time, and totals for both players."
         print(error)
         return jsonify(error), 400
     
     try:
-        update_completed_match(match_id, winner_id, discipline, judge_id, dt, player_1_total, player_2_total)
+        update_completed_match(match_id, winner_id, judge_id, dt, player_1_total, player_2_total)
         return jsonify(success=True), 201
     except Exception as error:
         print(error)

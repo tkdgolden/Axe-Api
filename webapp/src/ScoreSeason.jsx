@@ -6,10 +6,12 @@ import AddPlayerForm from './AddPlayerForm';
 import useGetAllPlayers from './hooks/useGetAllPlayers';
 import AxeApi from './Api';
 import ScoreSeasonTable from './ScoreSeasonTable';
+import useGetLapMatches from './hooks/useGetLapMatches';
 
 const ScoreSeason = () => {
     const params = useParams();
     const [currentLap, setCurrentLap] = useState();
+    const [hasCurrentLap, setHasCurrentLap] = useState(false);
     const [season, laps, enrolledPlayers, activePlayers, setEnrolledPlayers, setActive, removeActive] = useGetSeasonInfo(params.seasonId);
     const allPlayers = useGetAllPlayers();
     let unenrolledPlayers = [];
@@ -24,6 +26,36 @@ const ScoreSeason = () => {
             unenrolledPlayers.push(player);
         }
     });
+
+    useEffect(() => {
+        const oldSeason = JSON.parse(localStorage.getItem('currentSeasonId'));
+        console.log("old", oldSeason);
+        console.log(oldSeason !== params.seasonId)
+        if (oldSeason !== params.seasonId) {
+            console.log("HERE")
+            console.log(localStorage);
+            localStorage.removeItem('currentLap');
+            localStorage.setItem('activePlayers', JSON.stringify([]));
+            localStorage.removeItem('currentSeasonId');
+            console.log(localStorage);
+        }
+        localStorage.setItem('currentSeasonId', JSON.stringify(params.seasonId));
+        console.log(localStorage);
+    }, [])
+
+
+    useEffect(() => {
+        const currentLap = JSON.parse(localStorage.getItem('currentLap'));
+        if (currentLap) {
+            setCurrentLap(currentLap);
+            setHasCurrentLap(true);
+        } else {
+            setCurrentLap(laps[0]);
+        }
+    }, [laps]);
+
+    const matches = useGetLapMatches(currentLap && currentLap[0]);
+    console.log("matches", matches);
 
     useEffect(() => {
         if (activePlayers.length > 0) {
@@ -139,7 +171,7 @@ const ScoreSeason = () => {
                         </Col>
                     </Row>
                     <Row>
-                        <ScoreSeasonTable activePlayers={activePlayers} lap={currentLap} removeActive={removeActive} />
+                        <ScoreSeasonTable activePlayers={activePlayers} lap={currentLap} removeActive={removeActive} matches={matches} />
                     </Row>
                 </div>
             </>

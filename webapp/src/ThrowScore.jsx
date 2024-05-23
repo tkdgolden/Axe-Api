@@ -12,6 +12,7 @@ const ThrowScore = (props) => {
         return score;
     };
     
+    /* FURTHER STUDY: save quickpoints */
     const changeQuickPoint = (evt, whichPlayer) => {
         setQuickPoint(whichPlayer);
         const p1Score = evt.target.parentNode.previousSibling.value;
@@ -45,6 +46,7 @@ const ThrowScore = (props) => {
                     <option value="6">6</option>
                     <option value="12">12</option>
                 </Input>
+                {/* FURTHER STUDY: don't allow quickpoints to players who recieved a drop or fault */}
                 <ButtonGroup>
                     <Button outline onClick={(evt) => changeQuickPoint(evt, "L")} active={quickPoint === "L"}>p1</Button>
                     <Button outline onClick={(evt) => changeQuickPoint(evt, null)} active={quickPoint === null}>No Quickpoint</Button>

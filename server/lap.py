@@ -20,6 +20,8 @@ def add_lap(season_id, discipline, start_date):
 
 
 def get_lap_matches(lap_id):
+    CUR.execute(""" SELECT * FROM matches """)
+    print(CUR.fetchall())
     try:
         CUR.execute(""" SELECT match_id, player_1_id, player_2_id, dt FROM matches WHERE lap_id = %(lap_id)s """, {'lap_id': lap_id})
         matches = CUR.fetchall()
