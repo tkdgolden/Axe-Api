@@ -11,7 +11,6 @@ import useGetLapMatches from './hooks/useGetLapMatches';
 const ScoreSeason = () => {
     const params = useParams();
     const [currentLap, setCurrentLap] = useState();
-    const [hasCurrentLap, setHasCurrentLap] = useState(false);
     const [season, laps, enrolledPlayers, activePlayers, setEnrolledPlayers, setActive, removeActive] = useGetSeasonInfo(params.seasonId);
     const allPlayers = useGetAllPlayers();
     let unenrolledPlayers = [];
@@ -48,7 +47,6 @@ const ScoreSeason = () => {
         const currentLap = JSON.parse(localStorage.getItem('currentLap'));
         if (currentLap) {
             setCurrentLap(currentLap);
-            setHasCurrentLap(true);
         } else {
             setCurrentLap(laps[0]);
         }

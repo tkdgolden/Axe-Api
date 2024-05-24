@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 /**
  * controlled form for filtering/ searching companies
@@ -9,6 +10,7 @@ import React, { useState } from "react";
 const PlayerSearchForm = ({ searchPlayers }) => {
     const INITIAL_STATE = "PLAYER STATS";
     const [fData, setFormData] = useState(INITIAL_STATE);
+    const navigate = useNavigate();
 
 
     const handleChange = evt => {
@@ -19,8 +21,10 @@ const PlayerSearchForm = ({ searchPlayers }) => {
     const handleSubmit = evt => {
         evt.preventDefault();
 
-        searchPlayers(fData);
-        setFormData(INITIAL_STATE);
+        if (searchPlayers(fData)) {
+            console.log(fData);
+            navigate(`/player-stats/${fData[0]}`);
+        }
     }
 
     return (

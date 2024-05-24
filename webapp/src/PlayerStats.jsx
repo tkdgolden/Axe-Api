@@ -21,7 +21,7 @@ const PlayerStats = () => {
 
     console.log(playerStats);
 
-    if (playerStats.length !== 0) {
+    if (playerStats && playerStats.length !== 0) {
         return (
             <>
                 <div className='content'>
