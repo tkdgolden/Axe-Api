@@ -10,7 +10,10 @@ else:
 
 def db_connect():
     global conn
-    conn = psycopg2.connect(host="db", user="postgres", password=password, database="test_axe")
+    """ DOCKER """
+    # conn = psycopg2.connect(host="db", user="postgres", password=password, database="test_axe")
+    """ RENDER """
+    conn = psycopg2.connect('DB_URL')
 
     global CUR
     CUR = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
