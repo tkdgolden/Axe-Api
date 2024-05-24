@@ -5,8 +5,9 @@ import os
 if 'POSTGRES_PASSWORD_FILE' in os.environ:
     with open(os.environ['POSTGRES_PASSWORD_FILE'], 'r') as f:
         password = f.read().strip()
-    host="db"
-    username="postgres"
+    hostname = "db"
+    username = "postgres"
+    port = "5432"
 else:
     password = os.environ['POSTGRES_PASSWORD']
     hostname = "dpg-cp8bbe21hbls739vnffg-a"

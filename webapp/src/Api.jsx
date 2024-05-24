@@ -1,7 +1,11 @@
 import axios from "axios";
 import { redirect } from "react-router-dom";
 
-const BASE_URL = import.meta.env.REACT_APP_BASE_URL || "http://localhost:5000";
+/* DOCKER */
+// const BASE_URL = "http://localhost:5000";
+/* RENDER */
+const BASE_URL = "https://axe-api.onrender.com/";
+
 
 /** API Class.
  *
@@ -25,6 +29,8 @@ class AxeApi {
     //there are multiple ways to pass an authorization token, this is how you pass it in the header.
     //this has been provided to show you another way to pass the token. you are only expected to read this code for this project.
     const url = `${BASE_URL}/${endpoint}`;
+    console.log("base", BASE_URL);
+    console.log("url", url);
     const headers = { Authorization: `${AxeApi.token}` };
     const params = (method === "get")
       ? data
