@@ -29,17 +29,21 @@ two columns of options: season and tournament (FURTHER STUDY)
 - - the most recent season is displayed on top of the page for easy access
   - an option to go to a form to create a new season
   - an option to select an older season
+
 once a season is selected, there are options regarding players:
 - checking in a player (so that matches including players who are absent for the given week are not cluttering up the page)
 - enrolling an existing player (these are players that already exist from previous seasons)
 - a form to register a new player
+
 there are also options regarding "laps" (each week of a season is called a lap):
 - score an existing lap (you may select a lap that has already been created)
 - start a new lap (automatically set to be the current lap)
+
 when a lap is selected, and players checked in, a table with the available matches will appear below
 - each grid on the table corresponds to two players a player will not play themselves, so these appear black
 - matches that have been completed are green and cannot be clicked (players may not face off twice in one lap)
 - matches that have not been completed are blue and can be clicked to begin that match
+
 once a match is selected, a page for scoring that match is displayed
 - most fields begin as hidden to control the flow of the match
 - which color bullseye to aim for is kept secret until that throw has begun
